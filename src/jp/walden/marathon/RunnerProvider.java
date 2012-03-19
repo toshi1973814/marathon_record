@@ -84,9 +84,21 @@ public class RunnerProvider extends ContentProvider {
 	}
 
 	@Override
-	public int delete(Uri uri, String selection, String[] selectionArgs) {
+	public int delete(Uri uri, String where, String[] whereArgs) {
 		// TODO Auto-generated method stub
-		return 0;
+		int count;
+		switch(uriMatcher.match(uri)) {
+		case RUNNER_ID:
+			String segment = uri.getPathSegments().get(1);
+			count = runnerDB.delete(RUNNER_TABLE, KEY_ID + "=" + segment 
+					+ (!TextUtils.isEmpty(where) ? " AND ("
+					+ where + ")" : "")
+					, whereArgs);
+			break;
+		default: throw new IllegalArgumentException("Unsupported URI: " + uri);
+		}
+		getContext().getContentResolver().notifyChange(uri, null);
+		return count;
 	}
 
 	@Override
@@ -116,8 +128,8 @@ public class RunnerProvider extends ContentProvider {
 		private static final String DATABASE_CREATE =
 				"CREATE TABLE " + RUNNER_TABLE + " ("
 				+ KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-				+ KEY_NUMBER + " INTEGER, "
-				+ KEY_NAME + " TEXT);";
+				+ KEY_NUMBER + " INTEGER UNIQUE NOT NULL, "
+				+ KEY_NAME + " TEXT NOT NULL);";
 				
 		public runnerDatabaseHelper(Context context, String name,
 				CursorFactory factory, int version) {
