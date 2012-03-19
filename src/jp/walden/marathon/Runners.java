@@ -1,9 +1,5 @@
 package jp.walden.marathon;
 
-import java.util.ArrayList;
-
-import jp.walden.marathon.R.id;
-
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.ContentResolver;
@@ -18,13 +14,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
 public class Runners extends ListActivity {
-	
+
 	private static final int MENU_GROUP_MAIN = 0;
 	private static final int MENU_GROUP_CONTEXT = 1;
 	  
@@ -46,27 +40,15 @@ public class Runners extends ListActivity {
 //	ArrayAdapter<Runner> aa;
 //	ArrayList<Runner> runners = new ArrayList<Runner>();
 	SimpleCursorAdapter mAdapter;
-
-	@Override
-	public void onCreateContextMenu(ContextMenu menu, View v,
-			ContextMenuInfo menuInfo) {
-		// TODO Auto-generated method stub
-		super.onCreateContextMenu(menu, v, menuInfo);
-		menu.add(MENU_GROUP_CONTEXT, SELECT_1KM, Menu.NONE, R.string.menu_main_context_select_1km);
-		menu.add(MENU_GROUP_CONTEXT, SELECT_3KM, Menu.NONE, R.string.menu_main_context_select_3km);
-		menu.add(MENU_GROUP_CONTEXT, SELECT_5KM, Menu.NONE, R.string.menu_main_context_select_5km);
-		menu.add(MENU_GROUP_CONTEXT, SELECT_10KM, Menu.NONE, R.string.menu_main_context_select_10km);
-		menu.add(MENU_GROUP_CONTEXT, SELECT_20KM, Menu.NONE, R.string.menu_main_context_select_20km);
-		menu.add(MENU_GROUP_CONTEXT, REMOVE_RUNNER, Menu.NONE, R.string.menu_main_context_delete_runner);
-	}
+	Cursor cursor;
 
 	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        
-        Cursor cursor = getContentResolver().query(RunnerProvider.RUNNER_URI, null, null, null, null);
+        ContentResolver cr = getContentResolver();
+        cursor = cr.query(RunnerProvider.RUNNER_URI, null, null, null, null);
         startManagingCursor(cursor);
         String[] columns = new String[] {
         		RunnerProvider.KEY_NAME,
@@ -103,6 +85,32 @@ public class Runners extends ListActivity {
         registerForContextMenu(this.getListView());
 //        loadRunnersFromProvider();
     }
+
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) {
+		// TODO Auto-generated method stub
+		super.onCreateContextMenu(menu, v, menuInfo);
+		menu.add(MENU_GROUP_CONTEXT, SELECT_1KM, Menu.NONE, R.string.menu_main_context_select_1km);
+		menu.add(MENU_GROUP_CONTEXT, SELECT_3KM, Menu.NONE, R.string.menu_main_context_select_3km);
+		menu.add(MENU_GROUP_CONTEXT, SELECT_5KM, Menu.NONE, R.string.menu_main_context_select_5km);
+		menu.add(MENU_GROUP_CONTEXT, SELECT_10KM, Menu.NONE, R.string.menu_main_context_select_10km);
+		menu.add(MENU_GROUP_CONTEXT, SELECT_20KM, Menu.NONE, R.string.menu_main_context_select_20km);
+		menu.add(MENU_GROUP_CONTEXT, REMOVE_RUNNER, Menu.NONE, R.string.menu_main_context_delete_runner);
+	}
+	
+	@Override
+	public void onContentChanged() {
+		// TODO Auto-generated method stub
+		super.onContentChanged();
+        // ランナーのレコードを確認し、なければ入力フォームへのリンクを表示する
+		if(cursor != null) {
+		    if(0 == cursor.getCount()) {
+		    	  add_runner.setVisibility(android.view.View.VISIBLE);
+		      	  add_runner.setText(R.string.message_navigation_to_add_runner);
+			    }
+		}
+	}
 
 //    private void refreshRunners() {
 //    	URL url;
