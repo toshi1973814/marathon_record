@@ -5,14 +5,20 @@
     <string name="app_name">よこはま月例マラソン記録取得アプリ</string>
     <string name="menu_main_add_runner">ランナー追加</string>
     <string name="menu_main_preferences">設定</string>
+    <string name="menu_main_context_select_1km">1kmの記録</string>
+    <string name="menu_main_context_select_3km">3kmの記録</string>
+    <string name="menu_main_context_select_5km">5kmの記録</string>
+    <string name="menu_main_context_select_10km">10kmの記録</string>
+    <string name="menu_main_context_select_20km">20kmの記録</string>
     <string name="menu_main_context_delete_runner">ランナー削除</string>
     <string name="button_add_runner">追加</string>
     <string name="form_label_runner_number">ナンバー</string>
     <string name="form_label_runner_name">名前</string>
     <string name="add_runner_supplementation">名前は記録の検索では使われないので、自由に設定してください。</string>
-    <string name="error_message_runner_number_wrong_format">名前は記録の検索では使われないので、自由に設定してください。</string>
+    <string name="error_message_runner_number_wrong_format">ナンバーは数値を入力してください。</string>
     <string name="message_navigation_to_add_runner">ランナーを追加</string>
     <string name="no_string"></string>
     <string name="runner_feed">http://earthquake.usgs.gov/eqcenter/catalogs/1day-M2.5.xml</string>
+    <string name="error_message_failed_to_add_runner">ランナーの追加に失敗しました。\nナンバーの重複等ご確認ください。</string>
     
 </resources>

@@ -51,7 +51,7 @@ public class RunnerProvider extends ContentProvider {
 		
 		String orderBy;
 		if (TextUtils.isEmpty(sort)) {
-			orderBy = KEY_NAME;
+			orderBy = KEY_NUMBER;
 		} else {
 			orderBy = sort;
 		}
@@ -88,6 +88,9 @@ public class RunnerProvider extends ContentProvider {
 		// TODO Auto-generated method stub
 		int count;
 		switch(uriMatcher.match(uri)) {
+		case RUNNERS:
+			count = runnerDB.delete(RUNNER_TABLE, where, whereArgs);
+			break;
 		case RUNNER_ID:
 			String segment = uri.getPathSegments().get(1);
 			count = runnerDB.delete(RUNNER_TABLE, KEY_ID + "=" + segment 
@@ -120,6 +123,7 @@ public class RunnerProvider extends ContentProvider {
 	public static final String KEY_NAME = "runner_name";
 	
 	// Column indexes
+	public static final int ID_COLUMN = 0;
 	public static final int NUMBER_COLUMN = 1;
 	public static final int NAME_COLUMN = 2;
 	

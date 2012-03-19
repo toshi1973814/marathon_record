@@ -12,7 +12,7 @@
     android:visibility="invisible"
   />
     <ListView
-        android:id="@+id/runners"
+        android:id="@android:id/android:list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 </LinearLayout>

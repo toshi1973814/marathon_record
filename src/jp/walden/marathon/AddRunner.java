@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.SQLException;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -31,19 +32,24 @@ public class AddRunner extends Activity {
 	          int runnerNumberInt;
 	          try {
 		          runnerNumberInt = Integer.parseInt(runnerNumber.getText().toString());
+		          String runnerNameString = runnerName.getText().toString();
+		          Runner runner = new Runner(runnerNumberInt, runnerNameString);
+		          addRunnerToDB(runner);
+		          Intent intent = new Intent();
+//		          intent.putExtra("runnerNumberString",runnerNumber.getText().toString());
+//		          intent.putExtra("runnerNameString",runnerNameString);
+		          AddRunner.this.setResult(RESULT_OK, intent);
+		          finish();
+		      // ランナー番号に数値以外の入力があった場合
 	          } catch (NumberFormatException e) {
 	        	  message.setVisibility(android.view.View.VISIBLE);
 	        	  message.setText(R.string.error_message_runner_number_wrong_format);
 	        	  return;
+	          // ランナー番号のUNIQUE制約違反等のSQLエラーの場合
+	          } catch (SQLException e) {
+	        	  message.setVisibility(android.view.View.VISIBLE);
+	        	  message.setText(R.string.error_message_failed_to_add_runner);
 	          }
-	          Intent intent = new Intent();
-	          intent.putExtra("runnerNumberString",runnerNumber.getText().toString());
-	          String runnerNameString = runnerName.getText().toString();
-	          intent.putExtra("runnerNameString",runnerNameString);
-	          AddRunner.this.setResult(RESULT_OK, intent);
-	          Runner runner = new Runner(runnerNumberInt, runnerNameString);
-	          addRunnerToDB(runner);
-	          finish();
 	        }
 	      });
 	}
