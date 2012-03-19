@@ -13,5 +13,6 @@
     <string name="error_message_runner_number_wrong_format">名前は記録の検索では使われないので、自由に設定してください。</string>
     <string name="message_navigation_to_add_runner">ランナーを追加</string>
     <string name="no_string"></string>
+    <string name="runner_feed">http://earthquake.usgs.gov/eqcenter/catalogs/1day-M2.5.xml</string>
     
 </resources>

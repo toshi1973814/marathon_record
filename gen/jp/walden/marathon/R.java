@@ -41,5 +41,6 @@ public final class R {
         public static final int menu_main_preferences=0x7f040003;
         public static final int message_navigation_to_add_runner=0x7f04000a;
         public static final int no_string=0x7f04000b;
+        public static final int runner_feed=0x7f04000c;
     }
 }

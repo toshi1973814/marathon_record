@@ -1,6 +1,8 @@
 package jp.walden.marathon;
 
 import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -26,8 +28,9 @@ public class AddRunner extends Activity {
 	    buttonEdit = (Button)findViewById(R.id.button_edit);
 	    buttonEdit.setOnClickListener(new View.OnClickListener() {
 	        public void onClick(View view) {
+	          int runnerNumberInt;
 	          try {
-		          Integer.parseInt(runnerNumber.getText().toString());
+		          runnerNumberInt = Integer.parseInt(runnerNumber.getText().toString());
 	          } catch (NumberFormatException e) {
 	        	  message.setVisibility(android.view.View.VISIBLE);
 	        	  message.setText(R.string.error_message_runner_number_wrong_format);
@@ -35,11 +38,22 @@ public class AddRunner extends Activity {
 	          }
 	          Intent intent = new Intent();
 	          intent.putExtra("runnerNumberString",runnerNumber.getText().toString());
-	          intent.putExtra("runnerNameString",runnerName.getText().toString());
+	          String runnerNameString = runnerName.getText().toString();
+	          intent.putExtra("runnerNameString",runnerNameString);
 	          AddRunner.this.setResult(RESULT_OK, intent);
+	          Runner runner = new Runner(runnerNumberInt, runnerNameString);
+	          addRunnerToDB(runner);
 	          finish();
 	        }
 	      });
 	}
+    
+    private void addRunnerToDB(Runner _runner) {
+    	ContentResolver cr = getContentResolver();
+    	ContentValues values = new ContentValues();
+    	values.put(RunnerProvider.KEY_NUMBER, _runner.getNumber());
+    	values.put(RunnerProvider.KEY_NAME, _runner.getName());
+    	cr.insert(RunnerProvider.RUNNER_URI, values);
+    }
 
 }

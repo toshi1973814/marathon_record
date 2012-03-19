@@ -3,7 +3,9 @@ package jp.walden.marathon;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -53,19 +55,59 @@ public class Runners extends Activity {
 
 	    aa = new ArrayAdapter<Runner>(getApplicationContext(), android.R.layout.simple_list_item_1, runners);
         listView.setAdapter(aa);
+        loadRunnersFromProvider();
     }
 
-//    protected void onMessageClick(View v) {
-//    	showAddRunnerForm();
+//    private void refreshRunners() {
+//    	URL url;
+//    	try {
+//    		String runnerFeed = getString(R.string.runner_feed);
+//    		url = new URL(runnerFeed);
+//    		
+//    		URLConnection connection;
+//    		connection = url.openConnection();
+//    		
+//    		HttpURLConnection httpConnection = (HttpURLConnection)connection;
+//    		int responseCode = httpConnection.getResponseCode();
+//    		if(responseCode == HttpURLConnection.HTTP_OK) {
+//    			InputStream in = httpConnection.getInputStream();
+//    			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+//    			DocumentBuilder db = dbf.newDocumentBuilder();
+//    			
+//    			Document dom = db.parse(in);
+//    			Element docEle = dom.getDocumentElement();
+//    			runners.clear();
+//    			
+//    			NodeList nl = docEle.getElementsByTagName("entry");
+//    			Element
+//    		}
+//    	}
 //    }
-    protected void showAddRunnerForm() {
+    private void loadRunnersFromProvider() {
+    	runners.clear();
+        ContentResolver cr = getContentResolver();
+        
+        Cursor c = cr.query(RunnerProvider.RUNNER_URI, null, null, null, null);
+        if (c.moveToFirst()) {
+        	do {
+        		int runnerNumber = c.getInt(RunnerProvider.NUMBER_COLUMN);
+        		String runnerName = c.getString(RunnerProvider.NAME_COLUMN);
+        		Runner runner = new Runner(runnerNumber,runnerName);
+        		addRunnerToArray(runner);
+        	} while(c.moveToNext());
+        }
+    }
+
+    private void addRunnerToArray(Runner runner) {
+		// TODO Auto-generated method stub
+    	runners.add(runner);
+    	aa.notifyDataSetChanged();
+		
+	}
+
+	protected void showAddRunnerForm() {
         Intent i = new Intent(this, AddRunner.class);
         startActivityForResult(i, REQUEST_CODE_ADD_RUNNER);
-    }
-    protected void getRunners() {
-    	runners.add(new Runner(1,"テスト太郎"));
-    	runners.add(new Runner(2,"次郎"));
-    	runners.add(new Runner(3,"サブロー"));
     }
 
 	@Override
@@ -103,12 +145,11 @@ public class Runners extends Activity {
 	    if (requestCode == REQUEST_CODE_ADD_RUNNER)
 	      if (resultCode == Activity.RESULT_OK) {
 	    	  Bundle extras = data.getExtras();
-//	          intent.putExtra("runnerNumberString",runnerNumber.getText().toString());
-//	          intent.putExtra("runnerNameString",runnerName.getText().toString());
 	    	  Integer runnerNumber = Integer.parseInt(extras.getString("runnerNumberString"));
 	    	  String runnerNameString = extras.getString("runnerNameString");
-	    	  runners.add(new Runner(runnerNumber,runnerNameString));
-	    	  aa.notifyDataSetChanged();
+	    	  addRunnerToArray(new Runner(runnerNumber,runnerNameString));
+//	    	  runners.add(new Runner(runnerNumber,runnerNameString));
+//	    	  aa.notifyDataSetChanged();
 	    	  add_runner.setVisibility(android.view.View.GONE);
 	      }
 	  }
