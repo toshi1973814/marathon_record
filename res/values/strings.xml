@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, MarathonRecordActivity!</string>
+    <string name="app_name">よこはま月例マラソン記録取得アプリ</string>
+    <string name="menu_main_add_runner">ランナー追加</string>
+    <string name="menu_main_preferences">設定</string>
+    <string name="menu_main_context_delete_runner">ランナー削除</string>
+    <string name="button_add_runner">追加</string>
+    <string name="form_label_runner_number">ナンバー</string>
+    <string name="form_label_runner_name">名前</string>
+    <string name="add_runner_supplementation">名前は記録の検索では使われないので、自由に設定してください。</string>
+    <string name="error_message_runner_number_wrong_format">名前は記録の検索では使われないので、自由に設定してください。</string>
+    
+</resources>
