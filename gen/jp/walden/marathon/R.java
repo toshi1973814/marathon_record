@@ -14,14 +14,15 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int add_runner_supplementation=0x7f050001;
+        public static final int add_runner=0x7f050007;
         public static final int button_edit=0x7f050006;
-        public static final int error_message=0x7f050000;
         public static final int form_label_runner_name=0x7f050004;
         public static final int form_label_runner_number=0x7f050002;
+        public static final int message=0x7f050000;
         public static final int runner_name=0x7f050005;
         public static final int runner_number=0x7f050003;
-        public static final int runners=0x7f050007;
+        public static final int runners=0x7f050008;
+        public static final int supplementation=0x7f050001;
     }
     public static final class layout {
         public static final int add_runner=0x7f030000;
@@ -38,5 +39,7 @@ public final class R {
         public static final int menu_main_add_runner=0x7f040002;
         public static final int menu_main_context_delete_runner=0x7f040004;
         public static final int menu_main_preferences=0x7f040003;
+        public static final int message_navigation_to_add_runner=0x7f04000a;
+        public static final int no_string=0x7f04000b;
     }
 }

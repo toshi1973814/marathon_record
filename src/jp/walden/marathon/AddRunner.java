@@ -10,17 +10,17 @@ import android.widget.TextView;
 
 public class AddRunner extends Activity {
 
-	TextView errorMessage;
-	EditText runnerNumber;
-	EditText runnerName;
-	Button buttonEdit;
+	protected TextView message;
+	protected EditText runnerNumber;
+	protected EditText runnerName;
+	protected Button buttonEdit;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 	    setContentView(R.layout.add_runner);
-	    errorMessage = (TextView)findViewById(R.id.error_message);
+	    message = (TextView)findViewById(R.id.message);
 	    runnerNumber = (EditText)findViewById(R.id.runner_number);
 	    runnerName = (EditText)findViewById(R.id.runner_name);
 	    buttonEdit = (Button)findViewById(R.id.button_edit);
@@ -29,8 +29,8 @@ public class AddRunner extends Activity {
 	          try {
 		          Integer.parseInt(runnerNumber.getText().toString());
 	          } catch (NumberFormatException e) {
-	        	  errorMessage.setVisibility(android.view.View.VISIBLE);
-	        	  errorMessage.setText(R.string.error_message_runner_number_wrong_format);
+	        	  message.setVisibility(android.view.View.VISIBLE);
+	        	  message.setText(R.string.error_message_runner_number_wrong_format);
 	        	  return;
 	          }
 	          Intent intent = new Intent();

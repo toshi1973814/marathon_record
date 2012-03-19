@@ -7,7 +7,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnTouchListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 public class Runners extends Activity {
@@ -17,6 +21,7 @@ public class Runners extends Activity {
 	private static final int DIALOG_ADD_RUNNER = 1;
 	private static final int REQUEST_CODE_ADD_RUNNER = 1;
 	private static final int REQUEST_CODE_PREFERENCES = 2;
+	protected Button add_runner;
 	
 	ArrayAdapter<Runner> aa;
 	ArrayList<Runner> runners = new ArrayList<Runner>();
@@ -27,23 +32,37 @@ public class Runners extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         
-        // ランナーのレコードを確認し、なければ入力フォームを表示する
-	    if(0 == runners.size()) {
-	    	showAddRunnerForm();
-	    }
-        
-        getRunners();
+//        getRunners();
 //        String[] items = {"red", "blue","green"};
         ListView listView = (ListView) findViewById(R.id.runners);
-        aa = new ArrayAdapter<Runner>(getApplicationContext(), android.R.layout.simple_list_item_1, runners);
+	    add_runner = (Button)findViewById(R.id.add_runner);
+        add_runner.setOnTouchListener(new OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				// TODO Auto-generated method stub
+				showAddRunnerForm();
+				return true;
+			}
+		});
+        // ランナーのレコードを確認し、なければ入力フォームへのリンクを表示する
+	    if(0 == runners.size()) {
+    	  add_runner.setVisibility(android.view.View.VISIBLE);
+      	  add_runner.setText(R.string.message_navigation_to_add_runner);
+	    }
+
+	    aa = new ArrayAdapter<Runner>(getApplicationContext(), android.R.layout.simple_list_item_1, runners);
         listView.setAdapter(aa);
     }
 
-    public void showAddRunnerForm() {
+//    protected void onMessageClick(View v) {
+//    	showAddRunnerForm();
+//    }
+    protected void showAddRunnerForm() {
         Intent i = new Intent(this, AddRunner.class);
         startActivityForResult(i, REQUEST_CODE_ADD_RUNNER);
     }
-    public void getRunners() {
+    protected void getRunners() {
     	runners.add(new Runner(1,"テスト太郎"));
     	runners.add(new Runner(2,"次郎"));
     	runners.add(new Runner(3,"サブロー"));
@@ -90,6 +109,7 @@ public class Runners extends Activity {
 	    	  String runnerNameString = extras.getString("runnerNameString");
 	    	  runners.add(new Runner(runnerNumber,runnerNameString));
 	    	  aa.notifyDataSetChanged();
+	    	  add_runner.setVisibility(android.view.View.GONE);
 	      }
 	  }
 	

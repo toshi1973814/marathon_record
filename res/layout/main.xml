@@ -4,6 +4,13 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
+  <Button
+    android:id="@+id/add_runner"
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    android:text=""
+    android:visibility="invisible"
+  />
     <ListView
         android:id="@+id/runners"
         android:layout_width="fill_parent"
