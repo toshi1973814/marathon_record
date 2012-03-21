@@ -21,7 +21,7 @@
         </activity>
         <activity android:name=".AddRunner" android:label="@string/menu_main_add_runner"/>
         <activity android:name=".Preferences" android:label="@string/menu_main_preferences"/>
-        <activity android:name=".RunningRecord" android:label="@string/running_record_page_title"/>
+        <activity android:name=".RunningRecords" android:label="@string/running_record_page_title"/>
         <provider android:name=".RunnerProvider" android:authorities="jp.walden.provider.marathon"></provider>
     </application>
 

@@ -20,7 +20,8 @@
     <string name="no_string"></string>
     <string name="runner_feed">http://earthquake.usgs.gov/eqcenter/catalogs/1day-M2.5.xml</string>
     <string name="error_message_failed_to_add_runner">ランナーの追加に失敗しました。\nナンバーの重複等ご確認ください。</string>
-    <string name="running_record_page_title">%1$sさんの記録</string>
+    <string name="running_record_page_title">記録</string>
+    <string name="running_record_page_header">%1$sさんの記録</string>
     <string name="running_record_url">http://yg.qee.jp/2012/201201.htm</string>
     
 </resources>

@@ -21,7 +21,7 @@ public class RunningRecords extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.running_record);
 		ListView runningRecord = (ListView)findViewById(R.id.running_record);
-		TextView runningRecordPageTitle = (TextView)findViewById(R.id.running_record_page_title);
+		TextView runningRecordPageHeader = (TextView)findViewById(R.id.running_record_page_header);
 		
 		long runnerId = getIntent().getExtras().getLong("runnerId");
         ContentResolver cr = getContentResolver();
@@ -31,14 +31,15 @@ public class RunningRecords extends Activity {
 		int runnerNumber = c.getInt(RunnerProvider.NUMBER_COLUMN);
 		String runnerName = c.getString(RunnerProvider.NAME_COLUMN);
 		Resources res = getResources();
-		String title = String.format(res.getString(R.string.running_record_page_title), runnerName);
-		runningRecordPageTitle.setText(title);
+		String title = String.format(res.getString(R.string.running_record_page_header), runnerName);
+		runningRecordPageHeader.setText(title);
 
 	    URI httpUri;
 	    try {
 	        String runningRecordUrl = getString(R.string.running_record_url);
 	        httpUri = new URI(runningRecordUrl);
-	        httpRunningRecord httpGet = new httpRunningRecord(httpUri);
+	        HttpRunningRecord httpRunningRecord = new HttpRunningRecord(httpUri);
+	        httpRunningRecord.extract(String.valueOf(runnerNumber));
 	        // ランナー番号で結果を抽出
 //	        ArrayList<RunningRecord> = httpGet.extract();
 //	        String pageContent = httpGet.execute();
