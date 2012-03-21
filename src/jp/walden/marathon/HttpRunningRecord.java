@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -12,6 +14,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+
+import android.widget.ArrayAdapter;
 
 public class HttpRunningRecord {
 	private URI uri;
@@ -30,7 +34,7 @@ public class HttpRunningRecord {
 	        request.setURI(uri);
 	        HttpResponse response = client.execute(request);
 	        in = new BufferedReader
-	        (new InputStreamReader(response.getEntity().getContent()));
+	        (new InputStreamReader(response.getEntity().getContent(), "Shift_JIS"));
 	        NL = System.getProperty("line.separator");
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -44,74 +48,120 @@ public class HttpRunningRecord {
 //	    }
 	}
 	
-	public void extract(String runnerNumber) {
+	public void extract(String runnerNumber, ArrayList<RunningRecord> runningRecords, ArrayAdapter<RunningRecord> aa) {
+//	public void extract(String runnerNumber) {
 //	public ArrayList<RunningRecord> extract(String runnerNumber) {
         StringBuffer sb = new StringBuffer("");
+//        String rawline = "";
         String line = "";
         boolean buffering;
-        int ranking = 0;
+        Integer ranking = 0;
         String time = "";
+        String distance = "";
+        Integer runnersTotal = 0;
+        HashMap<String, Integer> distanceAndTotal = new HashMap<String, Integer>();
+        Integer total = 0;
         
 		// TODO Auto-generated method stub
         try {
             int counter = 0;
             buffering = false;
-			Pattern p1 = Pattern.compile("<(tr|TR).+>");
-			Pattern p2 = Pattern.compile("</(tr|TR)>");
-			Pattern p3 = Pattern.compile("<td.+>(" + runnerNumber + ")</td>");
-			Pattern p4 = Pattern.compile("<td.+>(\\d+)</td>");
-			Pattern p5 = Pattern.compile("<td.+>(\\d+\\:\\d+.+)</td>");
+            Pattern pDistance = Pattern.compile("(\\d+)\\s*(ｋｍ|ｋm)");
+            Pattern pDistanceOption = Pattern.compile("(\\d+)\\s*(ｋｍ|ｋm)\\s*（(.+)）");
+            Pattern pRunnersTotal = Pattern.compile("<td.+>\\s*(\\d+)\\s*</td>");
+//            Pattern pDistanceMarker = Pattern.compile("\\*{5}");
+			Pattern pTrStart = Pattern.compile("<(tr|TR).+>");
+			Pattern pTrEnd = Pattern.compile("</(tr|TR)>");
+			Pattern pRunnerNumber = Pattern.compile("<td.+>(" + runnerNumber + ")</td>");
+			Pattern pRanking = Pattern.compile("<td.+>\\s*(\\d+)\\s*</td>");
+			Pattern pTime = Pattern.compile("<td.+>\\s*(\\d+\\:\\d+.+)\\s*</td>");
+//			while ((rawline = in.readLine()) != null) {
 			while ((line = in.readLine()) != null) {
-				//test
-//				int res = 0;
-//				Pattern p = Pattern.compile("html");
-//				Matcher m = p.matcher(line);
-//				while (m.find()) { // Find each match in turn; String can't do this.
-//					res = 1;
-//				 }
+
+				// 文字コードを変換
+//				byte[] byteLine = rawline.getBytes("Shift_JIS");
+//				line = new String(byteLine,"Shift_JIS"); 
 				
 				// <tr></tr>のコンテンツをsbに格納
-				Matcher m1 = p1.matcher(line);
-				if (m1.find()) {
+				Matcher mTrStart = pTrStart.matcher(line);
+				if (mTrStart.find()) {
 					buffering = true;
 				}
-//				m1.reset();
 				
-				Matcher m2 = p2.matcher(line);
-				if (m2.find()) {
+				Matcher mTrEnd = pTrEnd.matcher(line);
+				if (mTrEnd.find()) {
+
 					buffering = false;
-					//　<tr></tr>の中に番号が含まれていた場合、順位と記録を抽出
 					sb.append(line + NL);
 					String trContent = sb.toString();
 					String[] trContentArray = trContent.split(NL);
-//					Pattern p3 = Pattern.compile("<td.+>" + runnerNumber + "</td>");
-					String lineToSearch = trContentArray[2];
-					Matcher m3 = p3.matcher(lineToSearch);
-					if(m3.find()) {
-						String matched = m3.group(1);
-						// 順位を抽出
-						Matcher m4 = p4.matcher(trContentArray[1]);
-						if(m4.find()) {
-							ranking = Integer.valueOf(m4.group(1));
+					
+					// 距離を抽出
+					Matcher mDistance = pDistance.matcher(trContent);
+//					Matcher mDistanceMarker = pDistanceMarker.matcher(trContent);
+//					if(mDistance.find() && mDistanceMarker.find()) {
+					if(mDistance.find()) {
+						Matcher mDistanceOption = pDistanceOption.matcher(trContent);
+						distance = mDistance.group(1);
+						if(distance.equals("１")) {
+							distance = "1";
+						} else if(distance.equals("３")) {
+							distance = "3";
+						} else if(distance.equals("５")) {
+							distance = "5";
+						} else if(distance.equals("１０")) {
+							distance = "10";
+						} else if(distance.equals("２０")) {
+							distance = "20";
 						}
-//						m4.reset();
+						distance = distance + "km";
+						
+						if(mDistanceOption.find()) {
+							String Option = mDistanceOption.group(3);
+							if(Option.equals("Ａ")) {
+								Option = "A";
+							} else if(Option.equals("Ｂ")) {
+								Option = "B";
+							} else if(Option.equals("Ｃ")) {
+								Option = "C";
+							}
+							distance = distance + " (" + Option + ")";
+						}
+
+						Matcher mRunnersTotal = pRunnersTotal.matcher(trContentArray[5]);
+						if(mRunnersTotal.find()) {
+							runnersTotal = Integer.valueOf(mRunnersTotal.group(1));
+							distanceAndTotal.put(distance, runnersTotal); 
+						}
+					}
+					
+					//　<tr></tr>の中にナンバーが含まれていた場合、順位と記録を抽出
+					String lineToSearch = trContentArray[2];
+					Matcher mRunnerNumber = pRunnerNumber.matcher(lineToSearch);
+					if(mRunnerNumber.find()) {
+						String matched = mRunnerNumber.group(1);
+						// 順位を抽出
+						Matcher mRanking = pRanking.matcher(trContentArray[1]);
+						if(mRanking.find()) {
+							ranking = Integer.valueOf(mRanking.group(1));
+						}
 						// タイムを抽出
 						for(String text : trContentArray) {
-							Matcher m5 = p5.matcher(text);
-							if(m5.find()) {
-								time = m5.group(1);
+							Matcher mTime = pTime.matcher(text);
+							if(mTime.find()) {
+								time = mTime.group(1);
 								break;
 							}
-//							m5.reset();
 						}
-						Date date = new Date(2012,3,21);
-						Integer distance = 5;
-						RunningRecord record = new RunningRecord(Integer.valueOf(runnerNumber), date, distance, ranking, time);
+						total = distanceAndTotal.get(distance);
+//						total = (distanceAndTotal.get(distance) != null) ? distanceAndTotal.get(distance) : null;
+						Date date = new Date(2012-1900,3,21);
+						RunningRecord record = new RunningRecord(Integer.valueOf(runnerNumber), date, distance, ranking, total, time);
+						runningRecords.add(record);
+						aa.notifyDataSetChanged();
 					}
-//					m3.reset();
 					sb.delete(0, sb.length());
 				}
-//				m2.reset();
 				if(buffering) {
 					sb.append(line + NL);
 				}

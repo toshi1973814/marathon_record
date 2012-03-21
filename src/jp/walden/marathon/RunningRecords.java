@@ -10,6 +10,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -20,8 +21,11 @@ public class RunningRecords extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.running_record);
-		ListView runningRecord = (ListView)findViewById(R.id.running_record);
+		ListView runningRecordListView = (ListView)findViewById(R.id.running_record);
 		TextView runningRecordPageHeader = (TextView)findViewById(R.id.running_record_page_header);
+		ArrayList<RunningRecord> runningRecords = new ArrayList<RunningRecord>();
+		ArrayAdapter<RunningRecord> aa = new ArrayAdapter<RunningRecord>(getApplicationContext(), android.R.layout.simple_list_item_1, runningRecords);
+		runningRecordListView.setAdapter(aa);
 		
 		long runnerId = getIntent().getExtras().getLong("runnerId");
         ContentResolver cr = getContentResolver();
@@ -39,7 +43,8 @@ public class RunningRecords extends Activity {
 	        String runningRecordUrl = getString(R.string.running_record_url);
 	        httpUri = new URI(runningRecordUrl);
 	        HttpRunningRecord httpRunningRecord = new HttpRunningRecord(httpUri);
-	        httpRunningRecord.extract(String.valueOf(runnerNumber));
+//	        httpRunningRecord.extract(String.valueOf(runnerNumber));
+	        httpRunningRecord.extract(String.valueOf(runnerNumber), runningRecords, aa);
 	        // ランナー番号で結果を抽出
 //	        ArrayList<RunningRecord> = httpGet.extract();
 //	        String pageContent = httpGet.execute();
