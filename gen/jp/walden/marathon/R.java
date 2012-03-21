@@ -23,12 +23,15 @@ public final class R {
         public static final int number_entry=0x7f050009;
         public static final int runner_name=0x7f050005;
         public static final int runner_number=0x7f050003;
+        public static final int running_record=0x7f05000b;
+        public static final int running_record_page_title=0x7f05000a;
         public static final int supplementation=0x7f050001;
     }
     public static final class layout {
         public static final int add_runner=0x7f030000;
         public static final int main=0x7f030001;
         public static final int runner_list_entry=0x7f030002;
+        public static final int running_record=0x7f030003;
     }
     public static final class string {
         public static final int add_runner_supplementation=0x7f04000d;
@@ -50,5 +53,7 @@ public final class R {
         public static final int message_navigation_to_add_runner=0x7f04000f;
         public static final int no_string=0x7f040010;
         public static final int runner_feed=0x7f040011;
+        public static final int running_record_page_title=0x7f040013;
+        public static final int running_record_url=0x7f040014;
     }
 }

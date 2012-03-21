@@ -27,6 +27,11 @@ public class Runners extends ListActivity {
 	private static final int DIALOG_ADD_RUNNER = 1;
 	private static final int REQUEST_CODE_ADD_RUNNER = 1;
 	private static final int REQUEST_CODE_PREFERENCES = 2;
+	private static final int REQUEST_CODE_RUNNING_RECORD_1KM = 3;
+	private static final int REQUEST_CODE_RUNNING_RECORD_3KM = 4;
+	private static final int REQUEST_CODE_RUNNING_RECORD_5KM = 5;
+	private static final int REQUEST_CODE_RUNNING_RECORD_10KM = 6;
+	private static final int REQUEST_CODE_RUNNING_RECORD_20KM = 7;
 	protected Button add_runner;
 	  
 	// Define the new menu item identifiers 
@@ -98,19 +103,19 @@ public class Runners extends ListActivity {
 		menu.add(MENU_GROUP_CONTEXT, SELECT_20KM, Menu.NONE, R.string.menu_main_context_select_20km);
 		menu.add(MENU_GROUP_CONTEXT, REMOVE_RUNNER, Menu.NONE, R.string.menu_main_context_delete_runner);
 	}
-	
-	@Override
-	public void onContentChanged() {
-		// TODO Auto-generated method stub
-		super.onContentChanged();
-        // ランナーのレコードを確認し、なければ入力フォームへのリンクを表示する
-		if(cursor != null) {
-		    if(0 == cursor.getCount()) {
-		    	  add_runner.setVisibility(android.view.View.VISIBLE);
-		      	  add_runner.setText(R.string.message_navigation_to_add_runner);
-			    }
-		}
-	}
+//	
+//	@Override
+//	public void onContentChanged() {
+//		// TODO Auto-generated method stub
+//		super.onContentChanged();
+//        // ランナーのレコードを確認し、なければ入力フォームへのリンクを表示する
+//		if(cursor != null) {
+//		    if(0 == cursor.getCount()) {
+//		    	  add_runner.setVisibility(android.view.View.VISIBLE);
+//		      	  add_runner.setText(R.string.message_navigation_to_add_runner);
+//			    }
+//		}
+//	}
 
 //    private void refreshRunners() {
 //    	URL url;
@@ -194,13 +199,19 @@ public class Runners extends ListActivity {
 	public boolean onContextItemSelected(MenuItem item) {
 		// TODO Auto-generated method stub
 		super.onContextItemSelected(item);
+  		AdapterView.AdapterContextMenuInfo info = 
+                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 
 	    switch (item.getItemId()) {
 	      case (REMOVE_RUNNER): {
-	  		AdapterView.AdapterContextMenuInfo info = 
-	                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 //	  		info.getId();
 	    	  removeRunner(String.valueOf(info.id));
+	    	  return true;
+	      }
+	      case (SELECT_5KM): {
+	          Intent i = new Intent(this, RunningRecords.class);
+	          i.putExtra("runnerId",info.id);
+	          startActivityForResult(i, REQUEST_CODE_RUNNING_RECORD_5KM);
 	    	  return true;
 	      }
 	      default: return false;
