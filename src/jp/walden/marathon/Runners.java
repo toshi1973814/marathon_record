@@ -74,7 +74,6 @@ public class Runners extends ListActivity {
 			
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
 				showAddRunnerForm();
 				return true;
 			}
@@ -94,7 +93,6 @@ public class Runners extends ListActivity {
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
-		// TODO Auto-generated method stub
 		super.onCreateContextMenu(menu, v, menuInfo);
 		menu.add(MENU_GROUP_CONTEXT, SELECT_1KM, Menu.NONE, R.string.menu_main_context_select_1km);
 		menu.add(MENU_GROUP_CONTEXT, SELECT_3KM, Menu.NONE, R.string.menu_main_context_select_3km);
@@ -106,7 +104,7 @@ public class Runners extends ListActivity {
 //	
 //	@Override
 //	public void onContentChanged() {
-//		// TODO Auto-generated method stub
+//		// 
 //		super.onContentChanged();
 //        // ランナーのレコードを確認し、なければ入力フォームへのリンクを表示する
 //		if(cursor != null) {
@@ -158,7 +156,7 @@ public class Runners extends ListActivity {
 //    }
 //
 //    private void addRunnerToArray(Runner runner) {
-//		// TODO Auto-generated method stub
+//		// 
 //    	runners.add(runner);
 //    	aa.notifyDataSetChanged();
 //		
@@ -171,7 +169,6 @@ public class Runners extends ListActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// TODO Auto-generated method stub
 	    menu.add(MENU_GROUP_MAIN, MENU_MAIN_ADD_RUNNER, Menu.NONE, R.string.menu_main_add_runner);
 	    menu.add(MENU_GROUP_MAIN, MENU_MAIN_PREFERENCES, Menu.NONE, R.string.menu_main_preferences);
 		return true;
@@ -179,7 +176,6 @@ public class Runners extends ListActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// TODO Auto-generated method stub
 		super.onOptionsItemSelected(item);
 	    switch (item.getItemId()) {
 	      case (MENU_MAIN_ADD_RUNNER): {
@@ -197,7 +193,6 @@ public class Runners extends ListActivity {
 
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
-		// TODO Auto-generated method stub
 		super.onContextItemSelected(item);
   		AdapterView.AdapterContextMenuInfo info = 
                 (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
@@ -221,7 +216,7 @@ public class Runners extends ListActivity {
 //	@Override
 //	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 //
-//		// TODO Auto-generated method stub
+//		// 
 //	    super.onOptionsItemSelected(item);
 //        
 //	    if(MENU_GROUP_MAIN == item.getGroupId()) {
@@ -250,7 +245,6 @@ public class Runners extends ListActivity {
 //	}
 	  
 	  private void removeRunner(String id) {
-		// TODO Auto-generated method stub
 		  ContentResolver cr = getContentResolver();
 		  String where = RunnerProvider.KEY_ID + " = " + id;
 		  cr.delete(RunnerProvider.RUNNER_URI, where, null);

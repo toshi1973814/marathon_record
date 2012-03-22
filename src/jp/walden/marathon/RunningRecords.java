@@ -18,7 +18,6 @@ public class RunningRecords extends Activity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.running_record);
 		ListView runningRecordListView = (ListView)findViewById(R.id.running_record);
@@ -50,10 +49,8 @@ public class RunningRecords extends Activity {
 //	        String pageContent = httpGet.execute();
 	        int i = 1;
 	    } catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 //	      } catch (ParserConfigurationException e) {

@@ -40,7 +40,6 @@ public class RunnerProvider extends ContentProvider {
 	
 	@Override
 	public boolean onCreate() {
-		// TODO Auto-generated method stub
 		Context context = getContext();
 		MarathonDatabaseHelper dbHelper;
 		dbHelper = new MarathonDatabaseHelper(context, MarathonDatabaseHelper.DATABASE_NAME, null, MarathonDatabaseHelper.DATABASE_VERSION);
@@ -51,7 +50,6 @@ public class RunnerProvider extends ContentProvider {
 	@Override
 	public Cursor query(Uri uri, String[] projection, String selection,
 			String[] selectionArgs, String sort) {
-		// TODO Auto-generated method stub
 		SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
 		qb.setTables(MarathonDatabaseHelper.RUNNER_TABLE);
 		switch(uriMatcher.match(uri)) {
@@ -74,7 +72,6 @@ public class RunnerProvider extends ContentProvider {
 
 	@Override
 	public String getType(Uri uri) {
-		// TODO Auto-generated method stub
 		switch (uriMatcher.match(uri)) {
 			case RUNNERS: return "vnd.android.cursor.dir/vnd.walden.marathon.runner";
 			case RUNNER_ID: return "vnd.android.cursor.dir/vnd.walden.marathon.runner";
@@ -84,7 +81,6 @@ public class RunnerProvider extends ContentProvider {
 
 	@Override
 	public Uri insert(Uri _uri, ContentValues values) {
-		// TODO Auto-generated method stub
 		long rowID = marathonDB.insert(MarathonDatabaseHelper.RUNNER_TABLE, "dummy", values);
 		if(rowID > 0) {
 			Uri uri = ContentUris.withAppendedId(RUNNER_URI, rowID);
@@ -96,7 +92,6 @@ public class RunnerProvider extends ContentProvider {
 
 	@Override
 	public int delete(Uri uri, String where, String[] whereArgs) {
-		// TODO Auto-generated method stub
 		int count;
 		switch(uriMatcher.match(uri)) {
 		case RUNNERS:
@@ -118,7 +113,6 @@ public class RunnerProvider extends ContentProvider {
 	@Override
 	public int update(Uri uri, ContentValues values, String selection,
 			String[] selectionArgs) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 	
@@ -149,19 +143,19 @@ public class RunnerProvider extends ContentProvider {
 //		public runnerDatabaseHelper(Context context, String name,
 //				CursorFactory factory, int version) {
 //			super(context, name, factory, version);
-//			// TODO Auto-generated constructor stub
+//			// 
 //		}
 //
 //		@Override
 //		public void onCreate(SQLiteDatabase db) {
-//			// TODO Auto-generated method stub
+//			// 
 //			db.execSQL(DATABASE_CREATE);
 //
 //		}
 //
 //		@Override
 //		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-//			// TODO Auto-generated method stub
+//			// 
 //
 //		}
 //

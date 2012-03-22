@@ -62,7 +62,6 @@ public class HttpRunningRecord {
         HashMap<String, Integer> distanceAndTotal = new HashMap<String, Integer>();
         Integer total = 0;
         
-		// TODO Auto-generated method stub
         try {
             int counter = 0;
             buffering = false;
@@ -169,10 +168,8 @@ public class HttpRunningRecord {
 			}
 	        in.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 	        if (in != null) {
