@@ -22,7 +22,8 @@
         <activity android:name=".AddRunner" android:label="@string/menu_main_add_runner"/>
         <activity android:name=".Preferences" android:label="@string/menu_main_preferences"/>
         <activity android:name=".RunningRecords" android:label="@string/running_record_page_title"/>
-        <provider android:name=".RunnerProvider" android:authorities="jp.walden.provider.marathon"></provider>
+        <provider android:name=".RunnerProvider" android:authorities="jp.walden.provider.runner"></provider>
+        <provider android:name=".RunningRecordProvider" android:authorities="com.paad.provider.running_record" />
     </application>
 
 </manifest>
