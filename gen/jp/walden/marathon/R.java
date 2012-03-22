@@ -56,5 +56,6 @@ public final class R {
         public static final int running_record_page_header=0x7f040014;
         public static final int running_record_page_title=0x7f040013;
         public static final int running_record_url=0x7f040015;
+        public static final int running_record_url_pattern=0x7f040016;
     }
 }

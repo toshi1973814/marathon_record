@@ -15,6 +15,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import android.content.ContentResolver;
 import android.widget.ArrayAdapter;
 
 public class HttpRunningRecord {
@@ -48,7 +49,10 @@ public class HttpRunningRecord {
 //	    }
 	}
 	
-	public void extract(String runnerNumber, ArrayList<RunningRecord> runningRecords, ArrayAdapter<RunningRecord> aa) {
+	public void extract
+	(String runnerNumber, RunningRecords rr) {
+//	(String runnerNumber, ArrayList<RunningRecord> runningRecords,
+//			ArrayAdapter<RunningRecord> aa, RunningRecords rr) {
 //	public void extract(String runnerNumber) {
 //	public ArrayList<RunningRecord> extract(String runnerNumber) {
         StringBuffer sb = new StringBuffer("");
@@ -156,8 +160,9 @@ public class HttpRunningRecord {
 //						total = (distanceAndTotal.get(distance) != null) ? distanceAndTotal.get(distance) : null;
 						Date date = new Date(2012-1900,3,21);
 						RunningRecord record = new RunningRecord(Integer.valueOf(runnerNumber), date, distance, ranking, total, time);
-						runningRecords.add(record);
-						aa.notifyDataSetChanged();
+//						runningRecords.add(record);
+//						aa.notifyDataSetChanged();
+						rr.addRunningRecord(record);
 					}
 					sb.delete(0, sb.length());
 				}

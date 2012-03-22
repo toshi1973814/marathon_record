@@ -1,8 +1,6 @@
 package jp.walden.marathon;
 
-import java.sql.Date;
-
-import android.text.format.Time;
+import java.util.Date;
 
 public class RunningRecord {
 
@@ -21,6 +19,54 @@ public class RunningRecord {
 		this.distance = distance;
 		this.ranking = ranking;
 		this.total = total;
+		this.time = time;
+	}
+
+	public Integer getRunnerNumber() {
+		return runnerNumber;
+	}
+
+	public void setRunnerNumber(Integer runnerNumber) {
+		this.runnerNumber = runnerNumber;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public String getDistance() {
+		return distance;
+	}
+
+	public void setDistance(String distance) {
+		this.distance = distance;
+	}
+
+	public Integer getRanking() {
+		return ranking;
+	}
+
+	public void setRanking(Integer ranking) {
+		this.ranking = ranking;
+	}
+
+	public Integer getTotal() {
+		return total;
+	}
+
+	public void setTotal(Integer total) {
+		this.total = total;
+	}
+
+	public String getTime() {
+		return time;
+	}
+
+	public void setTime(String time) {
 		this.time = time;
 	}
 

@@ -1,5 +1,9 @@
 package jp.walden.marathon;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.ContentResolver;
@@ -45,7 +49,7 @@ public class Runners extends ListActivity {
 //	ArrayAdapter<Runner> aa;
 //	ArrayList<Runner> runners = new ArrayList<Runner>();
 	SimpleCursorAdapter mAdapter;
-	Cursor cursor;
+//	Cursor cursor;
 
 	/** Called when the activity is first created. */
     @Override
@@ -53,7 +57,7 @@ public class Runners extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         ContentResolver cr = getContentResolver();
-        cursor = cr.query(RunnerProvider.RUNNER_URI, null, null, null, null);
+        Cursor cursor = cr.query(RunnerProvider.RUNNER_URI, null, null, null, null);
         startManagingCursor(cursor);
         String[] columns = new String[] {
         		RunnerProvider.KEY_NAME,
@@ -196,21 +200,54 @@ public class Runners extends ListActivity {
 		super.onContextItemSelected(item);
   		AdapterView.AdapterContextMenuInfo info = 
                 (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-
-	    switch (item.getItemId()) {
-	      case (REMOVE_RUNNER): {
-//	  		info.getId();
+  		
+  		int itemId = item.getItemId();
+  		if(itemId == REMOVE_RUNNER) {
 	    	  removeRunner(String.valueOf(info.id));
 	    	  return true;
+  		}
+		// 現在日付を取得
+  		Calendar currentDate = Calendar.getInstance();
+  		String dateFormat = "yyyy-MM-dd";
+  		SimpleDateFormat formatter= 
+  				new SimpleDateFormat(dateFormat);
+  		String dateNow = formatter.format(currentDate.getTime());
+
+  		Intent i = new Intent(this, RunningRecords.class);
+        i.putExtra("runnerId",info.id);
+        i.putExtra("date",dateNow);
+        i.putExtra("dateFormat",dateFormat);
+        int requestCode = 0;
+	    switch (itemId) {
+	      case (SELECT_1KM): {
+	          i.putExtra("distance",1);
+	          requestCode = REQUEST_CODE_RUNNING_RECORD_1KM;
+	          break;
+	      }
+	      case (SELECT_3KM): {
+	          i.putExtra("distance",3);
+	          requestCode = REQUEST_CODE_RUNNING_RECORD_3KM;
+	          break;
 	      }
 	      case (SELECT_5KM): {
-	          Intent i = new Intent(this, RunningRecords.class);
-	          i.putExtra("runnerId",info.id);
-	          startActivityForResult(i, REQUEST_CODE_RUNNING_RECORD_5KM);
-	    	  return true;
+	          i.putExtra("distance",5);
+	          requestCode = REQUEST_CODE_RUNNING_RECORD_5KM;
+	          break;
+	      }
+	      case (SELECT_10KM): {
+	          i.putExtra("distance",10);
+	          requestCode = REQUEST_CODE_RUNNING_RECORD_10KM;
+	          break;
+	      }
+	      case (SELECT_20KM): {
+	          i.putExtra("distance",20);
+	          requestCode = REQUEST_CODE_RUNNING_RECORD_20KM;
+	          break;
 	      }
 	      default: return false;
 	    } 
+        startActivityForResult(i, requestCode);
+  	  return true;
 	}
 
 //	@Override
