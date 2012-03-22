@@ -23,7 +23,7 @@
         <activity android:name=".Preferences" android:label="@string/menu_main_preferences"/>
         <activity android:name=".RunningRecords" android:label="@string/running_record_page_title"/>
         <provider android:name=".RunnerProvider" android:authorities="jp.walden.provider.runner"></provider>
-        <provider android:name=".RunningRecordProvider" android:authorities="com.paad.provider.running_record" />
+        <provider android:name=".RunningRecordProvider" android:authorities="jp.walden.provider.running_record" />
     </application>
 
 </manifest>

@@ -2,7 +2,7 @@ package jp.walden.marathon;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
+//import java.util.Date;
 
 import android.app.Activity;
 import android.app.ListActivity;
@@ -28,9 +28,9 @@ public class Runners extends ListActivity {
 	  
 	private static final int MENU_MAIN_ADD_RUNNER = Menu.FIRST;
 	private static final int MENU_MAIN_PREFERENCES = Menu.FIRST+1;
-	private static final int DIALOG_ADD_RUNNER = 1;
+//	private static final int DIALOG_ADD_RUNNER = 1;
 	private static final int REQUEST_CODE_ADD_RUNNER = 1;
-	private static final int REQUEST_CODE_PREFERENCES = 2;
+//	private static final int REQUEST_CODE_PREFERENCES = 2;
 	private static final int REQUEST_CODE_RUNNING_RECORD_1KM = 3;
 	private static final int REQUEST_CODE_RUNNING_RECORD_3KM = 4;
 	private static final int REQUEST_CODE_RUNNING_RECORD_5KM = 5;

@@ -12,6 +12,4 @@ nbproject/private/
 *.swp
 *.out
 
-bin/MarathonRecord.apk
-bin/classes.dex
-bin/resources.ap_
+bin

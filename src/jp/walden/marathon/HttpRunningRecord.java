@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.sql.Date;
-import java.util.ArrayList;
+//import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -15,8 +15,8 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import android.content.ContentResolver;
-import android.widget.ArrayAdapter;
+//import android.content.ContentResolver;
+//import android.widget.ArrayAdapter;
 
 public class HttpRunningRecord {
 	private URI uri;
@@ -67,7 +67,7 @@ public class HttpRunningRecord {
         Integer total = 0;
         
         try {
-            int counter = 0;
+//            int counter = 0;
             buffering = false;
             Pattern pDistance = Pattern.compile("(\\d+)\\s*(ｋｍ|ｋm)");
             Pattern pDistanceOption = Pattern.compile("(\\d+)\\s*(ｋｍ|ｋm)\\s*（(.+)）");
@@ -142,7 +142,7 @@ public class HttpRunningRecord {
 					String lineToSearch = trContentArray[2];
 					Matcher mRunnerNumber = pRunnerNumber.matcher(lineToSearch);
 					if(mRunnerNumber.find()) {
-						String matched = mRunnerNumber.group(1);
+//						String matched = mRunnerNumber.group(1);
 						// 順位を抽出
 						Matcher mRanking = pRanking.matcher(trContentArray[1]);
 						if(mRanking.find()) {
@@ -169,7 +169,7 @@ public class HttpRunningRecord {
 				if(buffering) {
 					sb.append(line + NL);
 				}
-				counter++;
+//				counter++;
 			}
 	        in.close();
 		} catch (IOException e) {
