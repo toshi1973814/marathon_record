@@ -74,19 +74,19 @@ public class Runners extends ListActivity {
 //        String[] items = {"red", "blue","green"};
 //        ListView listView = (ListView) findViewById(R.id.runners);
 	    add_runner = (Button)findViewById(R.id.add_runner);
-        add_runner.setOnTouchListener(new OnTouchListener() {
-			
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				showAddRunnerForm();
-				return true;
-			}
-		});
+//        add_runner.setOnTouchListener(new OnTouchListener() {
+//			
+//			@Override
+//			public boolean onTouch(View v, MotionEvent event) {
+//				showAddRunnerForm();
+//				return true;
+//			}
+//		});
         // ランナーのレコードを確認し、なければ入力フォームへのリンクを表示する
-	    if(0 == cursor.getCount()) {
-    	  add_runner.setVisibility(android.view.View.VISIBLE);
-      	  add_runner.setText(R.string.message_navigation_to_add_runner);
-	    }
+//	    if(0 == cursor.getCount()) {
+//    	  add_runner.setVisibility(android.view.View.VISIBLE);
+////      	  add_runner.setText(R.string.message_navigation_to_add_runner);
+//	    }
 
 //	    aa = new ArrayAdapter<Runner>(getApplicationContext(), android.R.layout.simple_list_item_1, runners);
 //        listView.setAdapter(aa);
@@ -94,7 +94,7 @@ public class Runners extends ListActivity {
 //        loadRunnersFromProvider();
     }
 
-	@Override
+    @Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
@@ -105,68 +105,12 @@ public class Runners extends ListActivity {
 		menu.add(MENU_GROUP_CONTEXT, SELECT_20KM, Menu.NONE, R.string.menu_main_context_select_20km);
 		menu.add(MENU_GROUP_CONTEXT, REMOVE_RUNNER, Menu.NONE, R.string.menu_main_context_delete_runner);
 	}
-//	
-//	@Override
-//	public void onContentChanged() {
-//		// 
-//		super.onContentChanged();
-//        // ランナーのレコードを確認し、なければ入力フォームへのリンクを表示する
-//		if(cursor != null) {
-//		    if(0 == cursor.getCount()) {
-//		    	  add_runner.setVisibility(android.view.View.VISIBLE);
-//		      	  add_runner.setText(R.string.message_navigation_to_add_runner);
-//			    }
-//		}
-//	}
 
-//    private void refreshRunners() {
-//    	URL url;
-//    	try {
-//    		String runnerFeed = getString(R.string.runner_feed);
-//    		url = new URL(runnerFeed);
-//    		
-//    		URLConnection connection;
-//    		connection = url.openConnection();
-//    		
-//    		HttpURLConnection httpConnection = (HttpURLConnection)connection;
-//    		int responseCode = httpConnection.getResponseCode();
-//    		if(responseCode == HttpURLConnection.HTTP_OK) {
-//    			InputStream in = httpConnection.getInputStream();
-//    			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-//    			DocumentBuilder db = dbf.newDocumentBuilder();
-//    			
-//    			Document dom = db.parse(in);
-//    			Element docEle = dom.getDocumentElement();
-//    			runners.clear();
-//    			
-//    			NodeList nl = docEle.getElementsByTagName("entry");
-//    			Element
-//    		}
-//    	}
-//    }
-//    private void loadRunnersFromProvider() {
-//    	runners.clear();
-//        ContentResolver cr = getContentResolver();
-//        
-//        Cursor c = cr.query(RunnerProvider.RUNNER_URI, null, null, null, null);
-//        if (c.moveToFirst()) {
-//        	do {
-//        		int runnerNumber = c.getInt(RunnerProvider.NUMBER_COLUMN);
-//        		String runnerName = c.getString(RunnerProvider.NAME_COLUMN);
-//        		Runner runner = new Runner(runnerNumber,runnerName);
-//        		addRunnerToArray(runner);
-//        	} while(c.moveToNext());
-//        }
-//    }
-//
-//    private void addRunnerToArray(Runner runner) {
-//		// 
-//    	runners.add(runner);
-//    	aa.notifyDataSetChanged();
-//		
-//	}
+	public void showAddRunnerForm(View v) {
+		showAddRunnerForm();
+    }
 
-	protected void showAddRunnerForm() {
+	public void showAddRunnerForm() {
         Intent i = new Intent(this, AddRunner.class);
         startActivityForResult(i, REQUEST_CODE_ADD_RUNNER);
     }
@@ -249,37 +193,6 @@ public class Runners extends ListActivity {
         startActivityForResult(i, requestCode);
   	  return true;
 	}
-
-//	@Override
-//	public boolean onMenuItemSelected(int featureId, MenuItem item) {
-//
-//		// 
-//	    super.onOptionsItemSelected(item);
-//        
-//	    if(MENU_GROUP_MAIN == item.getGroupId()) {
-//		    switch (item.getItemId()) {
-//		      case (MENU_MAIN_ADD_RUNNER): {
-//		    	  showAddRunnerForm();
-//		    	  return true;
-//		      }
-//		      case (MENU_MAIN_PREFERENCES): {
-////		          Intent i = new Intent(this, Preferences.class);
-////		          startActivityForResult(i, REQUEST_CODE_PREFERENCES);
-//		          return true;
-//		      }
-//		      default: return false;
-//		    } 
-//	    } else if (MENU_GROUP_CONTEXT == item.getGroupId()) {
-//		    switch (item.getItemId()) {
-//		      case (REMOVE_RUNNER): {
-//		    	  removeRunner(item);
-//		    	  return true;
-//		      }
-//		      default: return false;
-//		    } 
-//	    }
-//	    return false;
-//	}
 	  
 	  private void removeRunner(String id) {
 		  ContentResolver cr = getContentResolver();
@@ -287,21 +200,21 @@ public class Runners extends ListActivity {
 		  cr.delete(RunnerProvider.RUNNER_URI, where, null);
 	}
 
-	@Override
-	  public void onActivityResult(int requestCode, int resultCode, Intent data) {
-	    super.onActivityResult(requestCode, resultCode, data);
-
-	    if (requestCode == REQUEST_CODE_ADD_RUNNER)
-	      if (resultCode == Activity.RESULT_OK) {
-//	    	  Bundle extras = data.getExtras();
-//	    	  Integer runnerNumber = Integer.parseInt(extras.getString("runnerNumberString"));
-//	    	  String runnerNameString = extras.getString("runnerNameString");
-//	    	  addRunnerToArray(new Runner(runnerNumber,runnerNameString));
-//	    	  runners.add(new Runner(runnerNumber,runnerNameString));
-//	    	  aa.notifyDataSetChanged();
-//	    	  loadRunnersFromProvider();
-	    	  add_runner.setVisibility(android.view.View.GONE);
-	      }
-	  }
+//	@Override
+//	  public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//	    super.onActivityResult(requestCode, resultCode, data);
+//
+//	    if (requestCode == REQUEST_CODE_ADD_RUNNER)
+//	      if (resultCode == Activity.RESULT_OK) {
+////	    	  Bundle extras = data.getExtras();
+////	    	  Integer runnerNumber = Integer.parseInt(extras.getString("runnerNumberString"));
+////	    	  String runnerNameString = extras.getString("runnerNameString");
+////	    	  addRunnerToArray(new Runner(runnerNumber,runnerNameString));
+////	    	  runners.add(new Runner(runnerNumber,runnerNameString));
+////	    	  aa.notifyDataSetChanged();
+////	    	  loadRunnersFromProvider();
+//	    	  add_runner.setVisibility(android.view.View.GONE);
+//	      }
+//	  }
 	
 }

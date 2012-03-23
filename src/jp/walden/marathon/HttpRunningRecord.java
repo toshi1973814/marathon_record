@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.sql.Date;
-//import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -15,6 +14,8 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import android.util.Log;
+
 //import android.content.ContentResolver;
 //import android.widget.ArrayAdapter;
 
@@ -22,6 +23,7 @@ public class HttpRunningRecord {
 	private URI uri;
 	BufferedReader in = null;
 	String NL;
+	private static final String TAG = "HttpRunningRecord";
 	
 	public HttpRunningRecord(URI uri) {
 		super();
@@ -58,17 +60,19 @@ public class HttpRunningRecord {
         StringBuffer sb = new StringBuffer("");
 //        String rawline = "";
         String line = "";
-        boolean buffering;
+        boolean buffering = false;
         Integer ranking = 0;
         String time = "";
         String distance = "";
         Integer runnersTotal = 0;
         HashMap<String, Integer> distanceAndTotal = new HashMap<String, Integer>();
         Integer total = 0;
+        Date runningDate = null;
         
         try {
-//            int counter = 0;
-            buffering = false;
+            int counter = 0;
+//            buffering = false;
+            Pattern pDate = Pattern.compile("(\\d{4})\\.(\\d{1,2})\\.(\\d{1,2})");
             Pattern pDistance = Pattern.compile("(\\d+)\\s*(ｋｍ|ｋm)");
             Pattern pDistanceOption = Pattern.compile("(\\d+)\\s*(ｋｍ|ｋm)\\s*（(.+)）");
             Pattern pRunnersTotal = Pattern.compile("<td.+>\\s*(\\d+)\\s*</td>");
@@ -98,6 +102,14 @@ public class HttpRunningRecord {
 					sb.append(line + NL);
 					String trContent = sb.toString();
 					String[] trContentArray = trContent.split(NL);
+					// 日付を抽出
+					Matcher mDate = pDate.matcher(trContent);
+					if(mDate.find()) {
+						Integer matchedYear = Integer.valueOf(mDate.group(1));
+						Integer matchedMonth = Integer.valueOf(mDate.group(2));
+						Integer matchedDay = Integer.valueOf(mDate.group(3));
+						runningDate = new Date(matchedYear-1900,matchedMonth,matchedDay);
+					}
 					
 					// 距離を抽出
 					Matcher mDistance = pDistance.matcher(trContent);
@@ -158,8 +170,9 @@ public class HttpRunningRecord {
 						}
 						total = distanceAndTotal.get(distance);
 //						total = (distanceAndTotal.get(distance) != null) ? distanceAndTotal.get(distance) : null;
-						Date date = new Date(2012-1900,3,21);
-						RunningRecord record = new RunningRecord(Integer.valueOf(runnerNumber), date, distance, ranking, total, time);
+						// TODO 仮の日付
+//						Date date = new Date(2012-1900,3,21);
+						RunningRecord record = new RunningRecord(Integer.valueOf(runnerNumber), runningDate, distance, ranking, total, time);
 //						runningRecords.add(record);
 //						aa.notifyDataSetChanged();
 						rr.addRunningRecord(record);
@@ -169,7 +182,10 @@ public class HttpRunningRecord {
 				if(buffering) {
 					sb.append(line + NL);
 				}
-//				counter++;
+				counter++;
+				if((counter % 1000) == 0) {
+					Log.v(TAG, "counter=" + counter + " on " + uri.toString());
+				}
 			}
 	        in.close();
 		} catch (IOException e) {

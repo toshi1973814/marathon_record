@@ -39,39 +39,6 @@ public class RunningRecords extends Activity {
 	
 	ArrayList<ContentProviderOperation> ops;
 
-	private void getExtraFromIntent() {
-		long runnerId = getIntent().getExtras().getLong("runnerId");
-		distance = getIntent().getExtras().getInt("distance");
-		date = getIntent().getExtras().getString("date");
-		dateFormat = getIntent().getExtras().getString("dateFormat");
-        runnerIdString = String.valueOf(runnerId);
-	}
-	
-
-	private Cursor getCursorFromRunnerProvider() {
-        Uri uri = Uri.parse(RunnerProvider.RUNNER_URI + "/" + runnerIdString);
-        Cursor cursor = cr.query(uri, null, null, null, null);
-        startManagingCursor(cursor);
-        return cursor;
-	}
-
-	private void setPageHeader(Cursor cursor, TextView runningRecordPageHeader) {
-		String runnerName = cursor.getString(RunnerProvider.NAME_COLUMN);
-		String title = String.format(res.getString(R.string.running_record_page_header), runnerName);
-		runningRecordPageHeader.setText(title);
-	}
-
-	private Cursor getLastRunningRecordCursor() {
-		StringBuffer sb = new StringBuffer();
-		sb.append
-		(RunningRecordProvider.RUNNING_RECORD_KEY_NUMBER + "=" + String.valueOf(runnerNumber));
-		String where = sb.toString();
-		String orderBy = MarathonDatabaseHelper.RUNNING_RECORD_KEY_DATE + " DESC";
-		Cursor lastRunningRecordCursor = cr.query(RunningRecordProvider.RUNNING_RECORD_URI, null, where, null, orderBy);
-		startManagingCursor(lastRunningRecordCursor);
-		return lastRunningRecordCursor;
-	}
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		
@@ -107,7 +74,7 @@ public class RunningRecords extends Activity {
   	  		SimpleDateFormat formatter= 
   	  				new SimpleDateFormat(dateFormat);
 			Date currentDate = formatter.parse(date);
-			int currentYear = currentDate.getYear() + 1900;
+			int currentYear = currentDate.getYear();
 			int currentMonth = currentDate.getMonth();
 			Date firstDateOfCurrentMonth = new Date(currentYear, currentMonth, 1, 0, 0, 0);
 
@@ -127,16 +94,18 @@ public class RunningRecords extends Activity {
   			}
 			
 			//　最新の日付を取得
-			int lastRunningRecordYear = lastRunningRecordDate.getYear() + 1900;
+			int lastRunningRecordYear = lastRunningRecordDate.getYear();
 			int lastRunningRecordMonth = lastRunningRecordDate.getMonth();
 			Date firstDateOfLastRunningRecordMonth = new Date(lastRunningRecordYear, lastRunningRecordMonth, 1, 0, 0, 0);
 			
 			// 最新の日付が現在月より小さい場合
 			if(firstDateOfLastRunningRecordMonth.before(firstDateOfCurrentMonth)) {
 				
-				int forLoopYear = firstDateOfLastRunningRecordMonth.getYear() + 1900;
+				int forLoopYear = firstDateOfLastRunningRecordMonth.getYear();
 				int forLoopMonth = firstDateOfLastRunningRecordMonth.getMonth();
 				Date firstDateOfForLoopMonth = new Date(forLoopYear, forLoopMonth + 1, 1, 0, 0, 0);
+				String forLoopYearUrlString = String.valueOf(forLoopYear + 1900);
+				String forLoopMonthUrlString = String.format("%02d", forLoopMonth);
 				
 				if(firstDateOfForLoopMonth.before(firstDateOfCurrentMonth)) {
 					String runningRecordUrl = "";
@@ -145,7 +114,7 @@ public class RunningRecords extends Activity {
 						// URLを生成
 						runningRecordUrl = 
 								String.format(res.getString(R.string.running_record_url_pattern),
-										String.valueOf(forLoopYear), String.valueOf(forLoopYear) + String.valueOf(forLoopMonth));
+										String.valueOf(forLoopYearUrlString), String.valueOf(forLoopYearUrlString) + String.valueOf(forLoopMonthUrlString));
 						httpUri = new URI(runningRecordUrl);
 						HttpRunningRecord httpRunningRecord = new HttpRunningRecord(httpUri);
 						
@@ -164,7 +133,7 @@ public class RunningRecords extends Activity {
 						}
 						
 						// 取得したら、比較対象月を加算
-						forLoopYear = firstDateOfForLoopMonth.getYear() + 1900;
+						forLoopYear = firstDateOfForLoopMonth.getYear();
 						forLoopMonth = firstDateOfForLoopMonth.getMonth();
 						firstDateOfForLoopMonth = new Date(forLoopYear, forLoopMonth + 1, 1, 0, 0, 0);
 					} while (firstDateOfForLoopMonth.before(firstDateOfCurrentMonth));
@@ -188,6 +157,38 @@ public class RunningRecords extends Activity {
 		}
 	}
 
+	private void getExtraFromIntent() {
+		long runnerId = getIntent().getExtras().getLong("runnerId");
+		distance = getIntent().getExtras().getInt("distance");
+		date = getIntent().getExtras().getString("date");
+		dateFormat = getIntent().getExtras().getString("dateFormat");
+        runnerIdString = String.valueOf(runnerId);
+	}
+	
+
+	private Cursor getCursorFromRunnerProvider() {
+        Uri uri = Uri.parse(RunnerProvider.RUNNER_URI + "/" + runnerIdString);
+        Cursor cursor = cr.query(uri, null, null, null, null);
+        startManagingCursor(cursor);
+        return cursor;
+	}
+
+	private void setPageHeader(Cursor cursor, TextView runningRecordPageHeader) {
+		String runnerName = cursor.getString(RunnerProvider.NAME_COLUMN);
+		String title = String.format(res.getString(R.string.running_record_page_header), runnerName);
+		runningRecordPageHeader.setText(title);
+	}
+
+	private Cursor getLastRunningRecordCursor() {
+		StringBuffer sb = new StringBuffer();
+		sb.append
+		(RunningRecordProvider.RUNNING_RECORD_KEY_NUMBER + "=" + String.valueOf(runnerNumber));
+		String where = sb.toString();
+		String orderBy = MarathonDatabaseHelper.RUNNING_RECORD_KEY_DATE + " DESC";
+		Cursor lastRunningRecordCursor = cr.query(RunningRecordProvider.RUNNING_RECORD_URI, null, where, null, orderBy);
+		startManagingCursor(lastRunningRecordCursor);
+		return lastRunningRecordCursor;
+	}
 
 	private Cursor getRunningRecordsCursor() {
 		StringBuffer sb = new StringBuffer();
@@ -195,7 +196,9 @@ public class RunningRecords extends Activity {
 		sb.append
 		(RunningRecordProvider.RUNNING_RECORD_KEY_NUMBER + "=" + String.valueOf(runnerNumber));
 		sb.append
-		(" and " + RunningRecordProvider.RUNNING_RECORD_KEY_DISTANCE + "=\"" + String.valueOf(distance) + "\"");
+		(" and " + RunningRecordProvider.RUNNING_RECORD_KEY_DISTANCE + " LIKE '%" + String.valueOf(distance) + "km%'");
+//		sb.append
+//		(" and " + RunningRecordProvider.RUNNING_RECORD_KEY_DISTANCE + " REGEXP '" + String.valueOf(distance) + "km'");
 		String where = sb.toString();
 		String orderBy = MarathonDatabaseHelper.RUNNING_RECORD_KEY_DATE + " DESC";
 		Cursor runningRecordsCursor = cr.query(RunningRecordProvider.RUNNING_RECORD_URI, null, where, null, orderBy);

@@ -87,7 +87,7 @@ public class RunningRecordProvider extends ContentProvider {
 
 	@Override
 	public Uri insert(Uri _uri, ContentValues values) {
-		long rowID = marathonDB.insert(MarathonDatabaseHelper.RUNNER_TABLE, "dummy", values);
+		long rowID = marathonDB.insert(MarathonDatabaseHelper.RUNNING_RECORD_TABLE, "dummy", values);
 		if(rowID > 0) {
 			Uri uri = ContentUris.withAppendedId(RUNNING_RECORD_URI, rowID);
 			getContext().getContentResolver().notifyChange(uri, null);
@@ -101,11 +101,11 @@ public class RunningRecordProvider extends ContentProvider {
 		int count;
 		switch(uriMatcher.match(uri)) {
 		case RUNNING_RECORDS:
-			count = marathonDB.delete(MarathonDatabaseHelper.RUNNER_TABLE, where, whereArgs);
+			count = marathonDB.delete(MarathonDatabaseHelper.RUNNING_RECORD_TABLE, where, whereArgs);
 			break;
 		case RUNNING_RECORD_ID:
 			String segment = uri.getPathSegments().get(1);
-			count = marathonDB.delete(MarathonDatabaseHelper.RUNNER_TABLE, MarathonDatabaseHelper.KEY_ID + "=" + segment 
+			count = marathonDB.delete(MarathonDatabaseHelper.RUNNING_RECORD_TABLE, MarathonDatabaseHelper.KEY_ID + "=" + segment 
 					+ (!TextUtils.isEmpty(where) ? " AND ("
 					+ where + ")" : "")
 					, whereArgs);

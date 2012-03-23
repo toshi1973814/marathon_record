@@ -60,7 +60,7 @@ public class MarathonDatabaseHelper extends SQLiteOpenHelper {
 			+ "UNIQUE("
 			+ RUNNING_RECORD_KEY_NUMBER + ", "
 			+ RUNNING_RECORD_KEY_DATE + ", "
-			+ RUNNING_RECORD_KEY_DISTANCE + ")) ON CONFLICT ROLLBACK;";
+			+ RUNNING_RECORD_KEY_DISTANCE + ") ON CONFLICT ROLLBACK);";
 			
 	public MarathonDatabaseHelper(Context context, String name,
 			CursorFactory factory, int version) {

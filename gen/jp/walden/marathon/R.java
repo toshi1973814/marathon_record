@@ -42,6 +42,8 @@ public final class R {
         public static final int form_label_runner_name=0x7f04000c;
         public static final int form_label_runner_number=0x7f04000b;
         public static final int hello=0x7f040000;
+        public static final int main_runner_name_header=0x7f040017;
+        public static final int main_runner_number_header=0x7f040018;
         public static final int menu_main_add_runner=0x7f040002;
         public static final int menu_main_context_delete_runner=0x7f040009;
         public static final int menu_main_context_select_10km=0x7f040007;
