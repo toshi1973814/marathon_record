@@ -27,5 +27,6 @@
     <string name="main_runner_name_header">ランナー名</string>
     <string name="main_runner_number_header">ナンバー</string>
     <string name="main_runner_supplementation">ランナー名を長押しするとメニューが表示されます。</string>
+    <string name="failed_to_get_total_symbol">-</string>
     
 </resources>

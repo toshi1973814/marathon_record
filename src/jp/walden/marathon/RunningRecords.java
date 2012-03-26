@@ -5,12 +5,13 @@ import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import android.app.Activity;
 import android.content.ContentProviderOperation;
 import android.content.ContentResolver;
-//import android.content.ContentValues;
 import android.content.OperationApplicationException;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -18,7 +19,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -27,7 +27,8 @@ public class RunningRecords extends Activity {
 	private ContentResolver cr;
 	private Resources res;
 	private ArrayList<RunningRecord> runningRecords = new ArrayList<RunningRecord>();
-	private ArrayAdapter<RunningRecord> aa;
+//	private ArrayAdapter<RunningRecord> aa;
+	private RunningRecordAdapter aa;
 
 	private static final String QUERY_RESULT_FORMAT = "yyyy-MM-dd";
 
@@ -49,9 +50,11 @@ public class RunningRecords extends Activity {
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.running_record);
-		ListView runningRecordListView = (ListView)findViewById(R.id.running_record);
 		TextView runningRecordPageHeader = (TextView)findViewById(R.id.running_record_page_header);
-		aa = new ArrayAdapter<RunningRecord>(getApplicationContext(), android.R.layout.simple_list_item_1, runningRecords);
+		ListView runningRecordListView = (ListView)findViewById(R.id.running_record);
+//		aa = new ArrayAdapter<RunningRecord>(getApplicationContext(), android.R.layout.simple_list_item_1, runningRecords);
+
+		aa = new RunningRecordAdapter(getApplicationContext(), R.layout.running_record_entry, runningRecords);
 		runningRecordListView.setAdapter(aa);
         cr = getContentResolver();
 		res = getResources();
@@ -104,20 +107,32 @@ public class RunningRecords extends Activity {
 			// 最新の日付が現在月より小さい場合
 			if(firstDateOfLastRunningRecordMonth.before(firstDateOfCurrentMonth)) {
 				
-				int forLoopYear = firstDateOfLastRunningRecordMonth.getYear();
-				int forLoopMonth = firstDateOfLastRunningRecordMonth.getMonth();
-				Date firstDateOfForLoopMonth = new Date(forLoopYear, forLoopMonth + 1, 1, 0, 0, 0);
-				String forLoopYearUrlString = String.valueOf(forLoopYear + 1900);
-				String forLoopMonthUrlString = String.format("%02d", forLoopMonth + 1);
+				// 最新のレコードの翌月分を取得するため、Dateの月を加算
+				int intYear = firstDateOfLastRunningRecordMonth.getYear();
+				int intMonth = firstDateOfLastRunningRecordMonth.getMonth();
+				Date firstDateOfForLoopMonth = new Date(intYear, intMonth + 1, 1, 0, 0, 0);
+				
+//				// Dateの月を加算した日付データを再取得
+//				int forLoopYear = firstDateOfForLoopMonth.getYear();
+//				int forLoopMonth = firstDateOfForLoopMonth.getMonth();
+//				Calendar calendar = new GregorianCalendar();
+//				calendar.setTime(firstDateOfForLoopMonth);
+//				String forLoopYearUrlString = String.valueOf(calendar.get(Calendar.YEAR));
+//				String forLoopMonthUrlString = String.valueOf(calendar.get(Calendar.MONTH));
 				
 				if(firstDateOfForLoopMonth.before(firstDateOfCurrentMonth)) {
 					String runningRecordUrl = "";
 					URI httpUri;
 					do {
+						int forLoopYear = firstDateOfForLoopMonth.getYear();
+						int forLoopMonth = firstDateOfForLoopMonth.getMonth();
+						String forLoopYearUrlString = String.valueOf(forLoopYear + 1900);
+						String forLoopMonthUrlString = String.format("%02d", forLoopMonth + 1);
+
 						// URLを生成
 						runningRecordUrl = 
 								String.format(res.getString(R.string.running_record_url_pattern),
-										String.valueOf(forLoopYearUrlString), String.valueOf(forLoopYearUrlString) + String.valueOf(forLoopMonthUrlString));
+										forLoopYearUrlString, forLoopYearUrlString + forLoopMonthUrlString);
 						httpUri = new URI(runningRecordUrl);
 						HttpRunningRecord httpRunningRecord = new HttpRunningRecord(httpUri);
 						
@@ -128,6 +143,8 @@ public class RunningRecords extends Activity {
 
 				        // ひと月分の解析が完了したので、トランザクションを確定
 				        try {
+				        	// TODO 該当データがある場合は、applyBatchを実行
+				        	//　そうでない場合は、空レコードを作成して挿入
 							cr.applyBatch("jp.walden.provider.running_record", ops);
 						} catch (RemoteException e) {
 							e.printStackTrace();
@@ -139,8 +156,11 @@ public class RunningRecords extends Activity {
 						forLoopYear = firstDateOfForLoopMonth.getYear();
 						forLoopMonth = firstDateOfForLoopMonth.getMonth();
 						firstDateOfForLoopMonth = new Date(forLoopYear, forLoopMonth + 1, 1, 0, 0, 0);
-						forLoopYearUrlString = String.valueOf(forLoopYear + 1900);
-						forLoopMonthUrlString = String.format("%02d", forLoopMonth + 1);
+//						calendar.setTime(firstDateOfForLoopMonth);
+//						forLoopYearUrlString = String.valueOf(calendar.get(Calendar.YEAR));
+//						forLoopMonthUrlString = String.valueOf(calendar.get(Calendar.MONTH));
+//						forLoopYearUrlString = String.valueOf(forLoopYear + 1900);
+//						forLoopMonthUrlString = String.format("%02d", forLoopMonth + 1);
 					} while (firstDateOfForLoopMonth.before(firstDateOfCurrentMonth));
 				}
 			}

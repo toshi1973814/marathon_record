@@ -8,7 +8,6 @@
     android:id="@+id/message"
     android:layout_width="fill_parent" 
     android:layout_height="wrap_content" 
-    android:text=""
     android:visibility="invisible"
     style="@style/supplement_text"
   />
@@ -29,7 +28,7 @@
     android:id="@+id/runner_number"
     android:layout_width="fill_parent" 
     android:layout_height="wrap_content" 
-    android:text=""
+    android:numeric="integer"
   />
   <TextView
     android:id="@+id/form_label_runner_name"
@@ -41,7 +40,6 @@
     android:id="@+id/runner_name"
     android:layout_width="fill_parent" 
     android:layout_height="wrap_content" 
-    android:text=""
   />
   <Button
     android:id="@+id/button_edit"

@@ -16,23 +16,29 @@ public final class R {
     public static final class id {
         public static final int add_runner=0x7f060007;
         public static final int button_edit=0x7f060006;
+        public static final int date=0x7f06000d;
+        public static final int divisor=0x7f06000f;
         public static final int form_label_runner_name=0x7f060004;
         public static final int form_label_runner_number=0x7f060002;
         public static final int main_runner_supplementation=0x7f06000a;
         public static final int message=0x7f060000;
         public static final int name_entry=0x7f060008;
         public static final int number_entry=0x7f060009;
+        public static final int ranking=0x7f06000e;
         public static final int runner_name=0x7f060005;
         public static final int runner_number=0x7f060003;
         public static final int running_record=0x7f06000c;
         public static final int running_record_page_header=0x7f06000b;
         public static final int supplementation=0x7f060001;
+        public static final int time=0x7f060011;
+        public static final int total=0x7f060010;
     }
     public static final class layout {
         public static final int add_runner=0x7f030000;
         public static final int main=0x7f030001;
         public static final int runner_list_entry=0x7f030002;
         public static final int running_record=0x7f030003;
+        public static final int running_record_entry=0x7f030004;
     }
     public static final class string {
         public static final int add_runner_supplementation=0x7f04000d;
@@ -40,6 +46,7 @@ public final class R {
         public static final int button_add_runner=0x7f04000a;
         public static final int error_message_failed_to_add_runner=0x7f040012;
         public static final int error_message_runner_number_wrong_format=0x7f04000e;
+        public static final int failed_to_get_total_symbol=0x7f04001a;
         public static final int form_label_runner_name=0x7f04000c;
         public static final int form_label_runner_number=0x7f04000b;
         public static final int hello=0x7f040000;
