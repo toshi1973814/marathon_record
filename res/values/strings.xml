@@ -28,5 +28,9 @@
     <string name="main_runner_number_header">ナンバー</string>
     <string name="main_runner_supplementation">ランナー名を長押しするとメニューが表示されます。</string>
     <string name="failed_to_get_total_symbol">-</string>
+    <string name="button_edit">保存</string>
+    <string name="months_to_get_data">データ取得期間（過去xか月）</string>
+    <string name="button_cancel">キャンセル</string>
+    <string name="array_item_all">全て</string>
     
 </resources>

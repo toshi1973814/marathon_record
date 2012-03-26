@@ -2,12 +2,13 @@ package jp.walden.marathon;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-//import java.util.Date;
 
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -26,11 +27,11 @@ public class Runners extends ListActivity {
 	private static final int MENU_GROUP_MAIN = 0;
 	private static final int MENU_GROUP_CONTEXT = 1;
 	  
-	private static final int MENU_MAIN_ADD_RUNNER = Menu.FIRST;
-	private static final int MENU_MAIN_PREFERENCES = Menu.FIRST+1;
+//	private static final int MENU_MAIN_ADD_RUNNER = Menu.FIRST;
+	private static final int MENU_MAIN_PREFERENCES = Menu.FIRST;
 //	private static final int DIALOG_ADD_RUNNER = 1;
 	private static final int REQUEST_CODE_ADD_RUNNER = 1;
-//	private static final int REQUEST_CODE_PREFERENCES = 2;
+	private static final int REQUEST_CODE_PREFERENCES = 2;
 	private static final int REQUEST_CODE_RUNNING_RECORD_1KM = 3;
 	private static final int REQUEST_CODE_RUNNING_RECORD_3KM = 4;
 	private static final int REQUEST_CODE_RUNNING_RECORD_5KM = 5;
@@ -50,6 +51,7 @@ public class Runners extends ListActivity {
 //	ArrayList<Runner> runners = new ArrayList<Runner>();
 	SimpleCursorAdapter mAdapter;
 //	Cursor cursor;
+	Integer monthsToGetData;
 
 	/** Called when the activity is first created. */
     @Override
@@ -91,6 +93,7 @@ public class Runners extends ListActivity {
 //	    aa = new ArrayAdapter<Runner>(getApplicationContext(), android.R.layout.simple_list_item_1, runners);
 //        listView.setAdapter(aa);
         registerForContextMenu(this.getListView());
+        updateFromPreferences();
 //        loadRunnersFromProvider();
     }
 
@@ -117,7 +120,7 @@ public class Runners extends ListActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-	    menu.add(MENU_GROUP_MAIN, MENU_MAIN_ADD_RUNNER, Menu.NONE, R.string.menu_main_add_runner);
+//	    menu.add(MENU_GROUP_MAIN, MENU_MAIN_ADD_RUNNER, Menu.NONE, R.string.menu_main_add_runner);
 	    menu.add(MENU_GROUP_MAIN, MENU_MAIN_PREFERENCES, Menu.NONE, R.string.menu_main_preferences);
 		return true;
 	}
@@ -126,13 +129,13 @@ public class Runners extends ListActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		super.onOptionsItemSelected(item);
 	    switch (item.getItemId()) {
-	      case (MENU_MAIN_ADD_RUNNER): {
-	    	  showAddRunnerForm();
-	    	  return true;
-	      }
+//	      case (MENU_MAIN_ADD_RUNNER): {
+//	    	  showAddRunnerForm();
+//	    	  return true;
+//	      }
 	      case (MENU_MAIN_PREFERENCES): {
-//	          Intent i = new Intent(this, Preferences.class);
-//	          startActivityForResult(i, REQUEST_CODE_PREFERENCES);
+	          Intent i = new Intent(this, Preferences.class);
+	          startActivityForResult(i, REQUEST_CODE_PREFERENCES);
 	          return true;
 	      }
 	      default: return false;
@@ -200,21 +203,37 @@ public class Runners extends ListActivity {
 		  cr.delete(RunnerProvider.RUNNER_URI, where, null);
 	}
 
-//	@Override
-//	  public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//	    super.onActivityResult(requestCode, resultCode, data);
-//
-//	    if (requestCode == REQUEST_CODE_ADD_RUNNER)
-//	      if (resultCode == Activity.RESULT_OK) {
-////	    	  Bundle extras = data.getExtras();
-////	    	  Integer runnerNumber = Integer.parseInt(extras.getString("runnerNumberString"));
-////	    	  String runnerNameString = extras.getString("runnerNameString");
-////	    	  addRunnerToArray(new Runner(runnerNumber,runnerNameString));
-////	    	  runners.add(new Runner(runnerNumber,runnerNameString));
-////	    	  aa.notifyDataSetChanged();
-////	    	  loadRunnersFromProvider();
+	@Override
+	  public void onActivityResult(int requestCode, int resultCode, Intent data) {
+	    super.onActivityResult(requestCode, resultCode, data);
+
+	    if (requestCode == REQUEST_CODE_PREFERENCES)
+	      if (resultCode == Activity.RESULT_OK) {
+	    	  updateFromPreferences();
+	    	  
+//	    	  Bundle extras = data.getExtras();
+//	    	  Integer runnerNumber = Integer.parseInt(extras.getString("runnerNumberString"));
+//	    	  String runnerNameString = extras.getString("runnerNameString");
+//	    	  addRunnerToArray(new Runner(runnerNumber,runnerNameString));
+//	    	  runners.add(new Runner(runnerNumber,runnerNameString));
+//	    	  aa.notifyDataSetChanged();
+//	    	  loadRunnersFromProvider();
 //	    	  add_runner.setVisibility(android.view.View.GONE);
-//	      }
-//	  }
+	      }
+	  }
+
+	private void updateFromPreferences() {
+		SharedPreferences prefs = getSharedPreferences(Preferences.USER_PREFERENCE, Activity.MODE_PRIVATE);
+		int monthsToGetDataIndex = prefs.getInt(Preferences.PREF_MONTHS_TO_GET_DATA, Preferences.PREF_MONTHS_TO_GET_DATA_DEFAULT);
+	    Resources r = getResources();
+	    // Get the option values from the arrays.
+	    String[] monthsToGetDataArray = r.getStringArray(R.array.preference_months_to_get);
+	    String monthsToGetDataString = monthsToGetDataArray[monthsToGetDataIndex];
+	    if(!monthsToGetDataString.equals(getString(R.string.array_item_all))) {
+	    	monthsToGetData = Integer.valueOf(monthsToGetDataString);
+	    } else {
+	    	monthsToGetData = 0;
+	    }
+	}
 	
 }

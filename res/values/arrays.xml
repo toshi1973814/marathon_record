@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+  <string-array name="preference_months_to_get">
+    <item>3</item>
+    <item>6</item>
+    <item>12</item>
+    <item>24</item>
+    <item>全て</item>
+  </string-array>
+</resources>
