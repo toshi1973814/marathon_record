@@ -1,9 +1,14 @@
 package jp.walden.marathon;
 
+import java.util.ArrayList;
+
 import android.content.ContentProvider;
+import android.content.ContentProviderOperation;
+import android.content.ContentProviderResult;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.OperationApplicationException;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -11,6 +16,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 
 public class RunningRecordProvider extends ContentProvider {
 
@@ -28,6 +34,8 @@ public class RunningRecordProvider extends ContentProvider {
 	public static final String RUNNING_RECORD_KEY_RANKING = MarathonDatabaseHelper.RUNNING_RECORD_KEY_RANKING;
 	public static final String RUNNING_RECORD_KEY_TOTAL = MarathonDatabaseHelper.RUNNING_RECORD_KEY_TOTAL;
 	public static final String RUNNING_RECORD_KEY_TIME = MarathonDatabaseHelper.RUNNING_RECORD_KEY_TIME;
+	public static final String RUNNING_RECORD_KEY_LINE = MarathonDatabaseHelper.RUNNING_RECORD_KEY_LINE;
+	public static final String RUNNING_RECORD_KEY_CREATED_AT = MarathonDatabaseHelper.RUNNING_RECORD_KEY_CREATED_AT;
 
 	// Column indexes;
 	public static final int RUNNING_RECORD_ID_COLUMN = MarathonDatabaseHelper.RUNNING_RECORD_ID_COLUMN;
@@ -37,12 +45,16 @@ public class RunningRecordProvider extends ContentProvider {
 	public static final int RUNNING_RECORD_RANKING_COLUMN = MarathonDatabaseHelper.RUNNING_RECORD_RANKING_COLUMN;
 	public static final int RUNNING_RECORD_TOTAL_COLUMN = MarathonDatabaseHelper.RUNNING_RECORD_TOTAL_COLUMN;
 	public static final int RUNNING_RECORD_TIME_COLUMN = MarathonDatabaseHelper.RUNNING_RECORD_TIME_COLUMN;
+	public static final int RUNNING_RECORD_LINE_COLUMN = MarathonDatabaseHelper.RUNNING_RECORD_LINE_COLUMN;
+	public static final int RUNNING_RECORD_CREATED_AT_COLUMN = MarathonDatabaseHelper.RUNNING_RECORD_CREATED_AT_COLUMN;
 	
 	static {
 		uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 		uriMatcher.addURI("jp.walden.provider.running_record", "running_records", RUNNING_RECORDS);
 		uriMatcher.addURI("jp.walden.provider.running_record", "running_records/#", RUNNING_RECORD_ID);
 	}
+
+	private static final String TAG = "RunnerProvider";
 
 	@Override
 	public boolean onCreate() {
@@ -120,6 +132,24 @@ public class RunningRecordProvider extends ContentProvider {
 	public int update(Uri uri, ContentValues values, String selection,
 			String[] selectionArgs) {
 		return 0;
+	}
+
+	@Override
+	public ContentProviderResult[] applyBatch(
+			ArrayList<ContentProviderOperation> operations)
+			throws OperationApplicationException {
+		marathonDB.beginTransaction();
+		try {
+			ContentProviderResult[] cpr = super.applyBatch(operations);
+			marathonDB.setTransactionSuccessful();
+			return cpr;
+		} catch (OperationApplicationException e) {
+			e.printStackTrace();
+			Log.v(TAG, "failed to insert runner_records.");
+			throw e;
+		} finally {
+			marathonDB.endTransaction();
+		}
 	}
 
 }

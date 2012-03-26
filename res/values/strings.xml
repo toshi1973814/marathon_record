@@ -24,7 +24,8 @@
     <string name="running_record_page_header">%1$sさんの記録</string>
     <string name="running_record_url">http://yg.qee.jp/2012/201201.htm</string>
     <string name="running_record_url_pattern">http://yg.qee.jp/%1$s/%2$s.htm</string>
-    <string name="main_runner_name_header">ランナー名（ or ニックネーム）</string>
+    <string name="main_runner_name_header">ランナー名</string>
     <string name="main_runner_number_header">ナンバー</string>
+    <string name="main_runner_supplementation">ランナー名を長押しするとメニューが表示されます。</string>
     
 </resources>

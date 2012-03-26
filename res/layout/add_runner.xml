@@ -10,12 +10,14 @@
     android:layout_height="wrap_content" 
     android:text=""
     android:visibility="invisible"
+    style="@style/supplement_text"
   />
     <TextView
     android:id="@+id/supplementation"
     android:layout_width="fill_parent" 
     android:layout_height="wrap_content" 
     android:text="@string/add_runner_supplementation"
+    style="@style/supplement_text"
   />
   <TextView
     android:id="@+id/form_label_runner_number"

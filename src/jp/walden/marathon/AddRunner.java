@@ -58,6 +58,7 @@ public class AddRunner extends Activity {
     	ContentValues values = new ContentValues();
     	values.put(RunnerProvider.KEY_NUMBER, _runner.getNumber());
     	values.put(RunnerProvider.KEY_NAME, _runner.getName());
+    	values.put(RunnerProvider.KEY_CREATED_AT, _runner.getCreated_at().toString());
     	cr.insert(RunnerProvider.RUNNER_URI, values);
     }
 

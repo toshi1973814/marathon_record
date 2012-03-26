@@ -1,9 +1,14 @@
 package jp.walden.marathon;
 
+import java.util.ArrayList;
+
 import android.content.ContentProvider;
+import android.content.ContentProviderOperation;
+import android.content.ContentProviderResult;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.OperationApplicationException;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -13,6 +18,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 
 public class RunnerProvider extends ContentProvider {
 
@@ -26,11 +32,13 @@ public class RunnerProvider extends ContentProvider {
 	public static final String KEY_ID = MarathonDatabaseHelper.KEY_ID;
 	public static final String KEY_NUMBER= MarathonDatabaseHelper.KEY_NUMBER;
 	public static final String KEY_NAME= MarathonDatabaseHelper.KEY_NAME;
+	public static final String KEY_CREATED_AT= MarathonDatabaseHelper.KEY_CREATED_AT;
 	
 	// Column indexes
 	public static final int ID_COLUMN = MarathonDatabaseHelper.ID_COLUMN;
 	public static final int NUMBER_COLUMN = MarathonDatabaseHelper.NUMBER_COLUMN;
 	public static final int NAME_COLUMN = MarathonDatabaseHelper.NAME_COLUMN;
+	public static final int CREATED_AT_COLUMN = MarathonDatabaseHelper.CREATED_AT_COLUMN;
 	
 	static {
 		uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);

@@ -70,7 +70,7 @@ public class HttpRunningRecord {
         Date runningDate = null;
         
         try {
-            int counter = 0;
+            int counter = 1;
 //            buffering = false;
             Pattern pDate = Pattern.compile("(\\d{4})\\.(\\d{1,2})\\.(\\d{1,2})");
             Pattern pDistance = Pattern.compile("(\\d+)\\s*(ｋｍ|ｋm)");
@@ -108,7 +108,7 @@ public class HttpRunningRecord {
 						Integer matchedYear = Integer.valueOf(mDate.group(1));
 						Integer matchedMonth = Integer.valueOf(mDate.group(2));
 						Integer matchedDay = Integer.valueOf(mDate.group(3));
-						runningDate = new Date(matchedYear-1900,matchedMonth,matchedDay);
+						runningDate = new Date(matchedYear-1900, matchedMonth - 1, matchedDay);
 					}
 					
 					// 距離を抽出
@@ -173,6 +173,7 @@ public class HttpRunningRecord {
 						// TODO 仮の日付
 //						Date date = new Date(2012-1900,3,21);
 						RunningRecord record = new RunningRecord(Integer.valueOf(runnerNumber), runningDate, distance, ranking, total, time);
+						record.setLine(counter);
 //						runningRecords.add(record);
 //						aa.notifyDataSetChanged();
 						rr.addRunningRecord(record);
@@ -184,7 +185,7 @@ public class HttpRunningRecord {
 				}
 				counter++;
 				if((counter % 1000) == 0) {
-					Log.v(TAG, "counter=" + counter + " on " + uri.toString());
+					Log.v(TAG, "line=" + counter + " on " + uri.toString());
 				}
 			}
 	        in.close();

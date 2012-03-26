@@ -17,6 +17,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.RemoteException;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -38,6 +39,8 @@ public class RunningRecords extends Activity {
 	private String runnerIdString;
 	
 	ArrayList<ContentProviderOperation> ops;
+
+	private static final String TAG = "RunningRecords";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +93,7 @@ public class RunningRecords extends Activity {
   				// レコードがない場合は、デフォルトの最大過去月 + 1をlastRunningRecordDateStringとみなす
   				// TODO デフォルトの最大過去月を設定画面で設定できるようにする
   				int maxPastMonth = 6;
-  				lastRunningRecordDate = new Date(currentYear, currentMonth - ( maxPastMonth - 1) , 1, 0, 0, 0);
+  				lastRunningRecordDate = new Date(currentYear, currentMonth - maxPastMonth , 1, 0, 0, 0);
   			}
 			
 			//　最新の日付を取得
@@ -105,7 +108,7 @@ public class RunningRecords extends Activity {
 				int forLoopMonth = firstDateOfLastRunningRecordMonth.getMonth();
 				Date firstDateOfForLoopMonth = new Date(forLoopYear, forLoopMonth + 1, 1, 0, 0, 0);
 				String forLoopYearUrlString = String.valueOf(forLoopYear + 1900);
-				String forLoopMonthUrlString = String.format("%02d", forLoopMonth);
+				String forLoopMonthUrlString = String.format("%02d", forLoopMonth + 1);
 				
 				if(firstDateOfForLoopMonth.before(firstDateOfCurrentMonth)) {
 					String runningRecordUrl = "";
@@ -136,6 +139,8 @@ public class RunningRecords extends Activity {
 						forLoopYear = firstDateOfForLoopMonth.getYear();
 						forLoopMonth = firstDateOfForLoopMonth.getMonth();
 						firstDateOfForLoopMonth = new Date(forLoopYear, forLoopMonth + 1, 1, 0, 0, 0);
+						forLoopYearUrlString = String.valueOf(forLoopYear + 1900);
+						forLoopMonthUrlString = String.format("%02d", forLoopMonth + 1);
 					} while (firstDateOfForLoopMonth.before(firstDateOfCurrentMonth));
 				}
 			}
@@ -237,6 +242,15 @@ public class RunningRecords extends Activity {
 //    	values.put(RunningRecordProvider.RUNNING_RECORD_KEY_TOTAL, runningRecord.getTotal());
 //    	values.put(RunningRecordProvider.RUNNING_RECORD_KEY_TIME, runningRecord.getTime());
 //    	cr.insert(RunningRecordProvider.RUNNING_RECORD_URI, values);
+//    	ContentResolver cr = getContentResolver();
+//    	ContentValues values = new ContentValues();
+//    	values.put(RunningRecordProvider.RUNNING_RECORD_KEY_NUMBER, runningRecord.getRunnerNumber());
+//    	values.put(RunningRecordProvider.RUNNING_RECORD_KEY_DATE, runningRecord.getDate().toString());
+//    	values.put(RunningRecordProvider.RUNNING_RECORD_KEY_DISTANCE, runningRecord.getDistance());
+//    	values.put(RunningRecordProvider.RUNNING_RECORD_KEY_RANKING, runningRecord.getRanking());
+//    	values.put(RunningRecordProvider.RUNNING_RECORD_KEY_TOTAL, runningRecord.getTotal());
+//    	values.put(RunningRecordProvider.RUNNING_RECORD_KEY_TIME, runningRecord.getTime());
+//    	cr.insert(RunningRecordProvider.RUNNING_RECORD_URI, values);
     	
     	ops.add(ContentProviderOperation.newInsert(RunningRecordProvider.RUNNING_RECORD_URI)
     		.withValue(RunningRecordProvider.RUNNING_RECORD_KEY_NUMBER, runningRecord.getRunnerNumber())
@@ -245,6 +259,18 @@ public class RunningRecords extends Activity {
 			.withValue(RunningRecordProvider.RUNNING_RECORD_KEY_RANKING, runningRecord.getRanking())
 			.withValue(RunningRecordProvider.RUNNING_RECORD_KEY_TOTAL, runningRecord.getTotal())
 			.withValue(RunningRecordProvider.RUNNING_RECORD_KEY_TIME, runningRecord.getTime())
+			.withValue(RunningRecordProvider.RUNNING_RECORD_KEY_LINE, runningRecord.getLine())
+			.withValue(RunningRecordProvider.RUNNING_RECORD_KEY_CREATED_AT, runningRecord.getCreated_at().toString())
 			.build());
+		Log.v(TAG, "ops.add "
+			+ RunningRecordProvider.RUNNING_RECORD_KEY_NUMBER + "=>" + runningRecord.getRunnerNumber() + "\n"
+			+ RunningRecordProvider.RUNNING_RECORD_KEY_DATE + "=>" + runningRecord.getDate().toString() + "\n"
+			+ RunningRecordProvider.RUNNING_RECORD_KEY_DISTANCE + "=>" + runningRecord.getDistance() + "\n"
+			+ RunningRecordProvider.RUNNING_RECORD_KEY_RANKING + "=>" + runningRecord.getRanking() + "\n"
+			+ RunningRecordProvider.RUNNING_RECORD_KEY_TOTAL + "=>" + runningRecord.getTotal() + "\n"
+			+ RunningRecordProvider.RUNNING_RECORD_KEY_TIME + "=>" + runningRecord.getTime() + "\n"
+			+ RunningRecordProvider.RUNNING_RECORD_KEY_LINE + "=>" + runningRecord.getLine() + "\n"
+			+ RunningRecordProvider.RUNNING_RECORD_KEY_CREATED_AT + "=>" + runningRecord.getCreated_at().toString()
+		);
 	}
 }

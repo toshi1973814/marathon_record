@@ -23,6 +23,7 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:text="@string/main_runner_name_header"
+              style="@style/text_in_table_header"
           />
           <TextView
               android:id="@+id/number_entry"
@@ -30,22 +31,20 @@
               android:layout_height="wrap_content"
               android:numeric="integer"
               android:text="@string/main_runner_number_header"
+              style="@style/text_in_table_header"
           />
         </TableRow>
     </TableLayout>
-<!--
-  <Button
-    android:id="@+id/add_runner"
-    android:layout_width="fill_parent" 
-    android:layout_height="wrap_content" 
-    android:text="@string/message_navigation_to_add_runner"
-    android:visibility="invisible"
-    android:onClick="showAddRunnerForm"
-  />
--->
   <ListView
         android:id="@android:id/android:list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
     />
+  <TextView
+      android:id="@+id/main_runner_supplementation"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/main_runner_supplementation"
+      style="@style/supplement_text"
+  />
 </LinearLayout>

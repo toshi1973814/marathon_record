@@ -10,6 +10,8 @@ public class RunningRecord {
 	private Integer ranking;
 	private Integer total;
 	private String time;
+	private Integer line;
+	private Date created_at;
 
 	public RunningRecord(Integer runnerNumber, Date date,
 			String distance, Integer ranking, Integer total, String time) {
@@ -20,6 +22,24 @@ public class RunningRecord {
 		this.ranking = ranking;
 		this.total = total;
 		this.time = time;
+		this.line = null;
+		this.created_at = new Date();
+	}
+
+	public Integer getLine() {
+		return line;
+	}
+
+	public void setLine(Integer line) {
+		this.line = line;
+	}
+
+	public Date getCreated_at() {
+		return created_at;
+	}
+
+	public void setCreated_at(Date created_at) {
+		this.created_at = created_at;
 	}
 
 	public Integer getRunnerNumber() {

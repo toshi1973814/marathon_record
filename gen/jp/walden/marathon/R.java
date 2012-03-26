@@ -14,18 +14,19 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int add_runner=0x7f050007;
-        public static final int button_edit=0x7f050006;
-        public static final int form_label_runner_name=0x7f050004;
-        public static final int form_label_runner_number=0x7f050002;
-        public static final int message=0x7f050000;
-        public static final int name_entry=0x7f050008;
-        public static final int number_entry=0x7f050009;
-        public static final int runner_name=0x7f050005;
-        public static final int runner_number=0x7f050003;
-        public static final int running_record=0x7f05000b;
-        public static final int running_record_page_header=0x7f05000a;
-        public static final int supplementation=0x7f050001;
+        public static final int add_runner=0x7f060007;
+        public static final int button_edit=0x7f060006;
+        public static final int form_label_runner_name=0x7f060004;
+        public static final int form_label_runner_number=0x7f060002;
+        public static final int main_runner_supplementation=0x7f06000a;
+        public static final int message=0x7f060000;
+        public static final int name_entry=0x7f060008;
+        public static final int number_entry=0x7f060009;
+        public static final int runner_name=0x7f060005;
+        public static final int runner_number=0x7f060003;
+        public static final int running_record=0x7f06000c;
+        public static final int running_record_page_header=0x7f06000b;
+        public static final int supplementation=0x7f060001;
     }
     public static final class layout {
         public static final int add_runner=0x7f030000;
@@ -44,6 +45,7 @@ public final class R {
         public static final int hello=0x7f040000;
         public static final int main_runner_name_header=0x7f040017;
         public static final int main_runner_number_header=0x7f040018;
+        public static final int main_runner_supplementation=0x7f040019;
         public static final int menu_main_add_runner=0x7f040002;
         public static final int menu_main_context_delete_runner=0x7f040009;
         public static final int menu_main_context_select_10km=0x7f040007;
@@ -59,5 +61,10 @@ public final class R {
         public static final int running_record_page_title=0x7f040013;
         public static final int running_record_url=0x7f040015;
         public static final int running_record_url_pattern=0x7f040016;
+    }
+    public static final class style {
+        public static final int supplement_text=0x7f050002;
+        public static final int text_in_table=0x7f050001;
+        public static final int text_in_table_header=0x7f050000;
     }
 }

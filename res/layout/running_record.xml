@@ -7,11 +7,13 @@
         android:id="@+id/running_record_page_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="28dip"
-        android:text="" />
+        android:text=""
+        style="@style/text_in_table"
+    />
     
     <ListView
         android:id="@+id/running_record"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+    />
 </LinearLayout>
