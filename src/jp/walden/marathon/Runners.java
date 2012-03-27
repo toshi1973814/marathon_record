@@ -32,21 +32,25 @@ public class Runners extends ListActivity {
 //	private static final int DIALOG_ADD_RUNNER = 1;
 	private static final int REQUEST_CODE_ADD_RUNNER = 1;
 	private static final int REQUEST_CODE_PREFERENCES = 2;
-	private static final int REQUEST_CODE_RUNNING_RECORD_1KM = 3;
-	private static final int REQUEST_CODE_RUNNING_RECORD_3KM = 4;
-	private static final int REQUEST_CODE_RUNNING_RECORD_5KM = 5;
-	private static final int REQUEST_CODE_RUNNING_RECORD_10KM = 6;
-	private static final int REQUEST_CODE_RUNNING_RECORD_20KM = 7;
+	private static final int REQUEST_CODE_UPDATE_RECORD = 3;
+	private static final int REQUEST_CODE_RUNNING_RECORD_1KM = 4;
+	private static final int REQUEST_CODE_RUNNING_RECORD_3KM = 5;
+	private static final int REQUEST_CODE_RUNNING_RECORD_5KM = 6;
+	private static final int REQUEST_CODE_RUNNING_RECORD_10KM = 7;
+	private static final int REQUEST_CODE_RUNNING_RECORD_20KM = 8;
 	protected Button add_runner;
 	  
 	// Define the new menu item identifiers 
-	static final private int SELECT_1KM = Menu.FIRST;
-	static final private int SELECT_3KM = Menu.FIRST + 1;
-	static final private int SELECT_5KM = Menu.FIRST + 2;
-	static final private int SELECT_10KM = Menu.FIRST + 3;
-	static final private int SELECT_20KM = Menu.FIRST + 4;
-	static final private int REMOVE_RUNNER = Menu.FIRST + 5;
-	
+	static final private int UPDATE_RECORD = Menu.FIRST;
+	static final private int SELECT_1KM = Menu.FIRST + 1;
+	static final private int SELECT_3KM = Menu.FIRST + 2;
+	static final private int SELECT_5KM = Menu.FIRST + 3;
+	static final private int SELECT_10KM = Menu.FIRST + 4;
+	static final private int SELECT_20KM = Menu.FIRST + 5;
+	static final private int REMOVE_RUNNER = Menu.FIRST + 6;
+
+	private static final String QUERY_RESULT_FORMAT = "yyyy-MM-dd";
+
 //	ArrayAdapter<Runner> aa;
 //	ArrayList<Runner> runners = new ArrayList<Runner>();
 	SimpleCursorAdapter mAdapter;
@@ -101,6 +105,7 @@ public class Runners extends ListActivity {
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
+		menu.add(MENU_GROUP_CONTEXT, UPDATE_RECORD, Menu.NONE, R.string.menu_main_context_update_record);
 		menu.add(MENU_GROUP_CONTEXT, SELECT_1KM, Menu.NONE, R.string.menu_main_context_select_1km);
 		menu.add(MENU_GROUP_CONTEXT, SELECT_3KM, Menu.NONE, R.string.menu_main_context_select_3km);
 		menu.add(MENU_GROUP_CONTEXT, SELECT_5KM, Menu.NONE, R.string.menu_main_context_select_5km);
@@ -153,47 +158,59 @@ public class Runners extends ListActivity {
 	    	  removeRunner(String.valueOf(info.id));
 	    	  return true;
   		}
-		// 現在日付を取得
-  		Calendar currentDate = Calendar.getInstance();
-  		String dateFormat = "yyyy-MM-dd";
-  		SimpleDateFormat formatter= 
-  				new SimpleDateFormat(dateFormat);
-  		String dateNow = formatter.format(currentDate.getTime());
 
-  		Intent i = new Intent(this, RunningRecords.class);
-        i.putExtra("runnerId",info.id);
-        i.putExtra("date",dateNow);
-        i.putExtra("dateFormat",dateFormat);
+  		Intent i;
         int requestCode = 0;
-	    switch (itemId) {
-	      case (SELECT_1KM): {
-	          i.putExtra("distance",1);
-	          requestCode = REQUEST_CODE_RUNNING_RECORD_1KM;
-	          break;
-	      }
-	      case (SELECT_3KM): {
-	          i.putExtra("distance",3);
-	          requestCode = REQUEST_CODE_RUNNING_RECORD_3KM;
-	          break;
-	      }
-	      case (SELECT_5KM): {
-	          i.putExtra("distance",5);
-	          requestCode = REQUEST_CODE_RUNNING_RECORD_5KM;
-	          break;
-	      }
-	      case (SELECT_10KM): {
-	          i.putExtra("distance",10);
-	          requestCode = REQUEST_CODE_RUNNING_RECORD_10KM;
-	          break;
-	      }
-	      case (SELECT_20KM): {
-	          i.putExtra("distance",20);
-	          requestCode = REQUEST_CODE_RUNNING_RECORD_20KM;
-	          break;
-	      }
-	      default: return false;
-	    } 
-        startActivityForResult(i, requestCode);
+  		
+  		// データ更新
+  		if(itemId == UPDATE_RECORD) {
+  			// 現在日付を取得
+  	  		Calendar currentDate = Calendar.getInstance();
+//  	  		String dateFormat = "yyyy-MM-dd";
+  	  		SimpleDateFormat formatter= 
+  	  				new SimpleDateFormat(QUERY_RESULT_FORMAT);
+  	  		String dateNow = formatter.format(currentDate.getTime());
+	  		i = new Intent(this, RunningRecordService.class);
+	        i.putExtra("runnerId",info.id);
+			i.putExtra("date",dateNow);
+			i.putExtra("dateFormat",QUERY_RESULT_FORMAT);
+			requestCode = REQUEST_CODE_UPDATE_RECORD;
+			startService(i);
+	    	return true;
+		} else {
+	  		i = new Intent(this, RunningRecords.class);
+	        i.putExtra("runnerId",info.id);
+		    switch (itemId) {
+		      case (SELECT_1KM): {
+		          i.putExtra("distance",1);
+		          requestCode = REQUEST_CODE_RUNNING_RECORD_1KM;
+		          break;
+		      }
+		      case (SELECT_3KM): {
+		          i.putExtra("distance",3);
+		          requestCode = REQUEST_CODE_RUNNING_RECORD_3KM;
+		          break;
+		      }
+		      case (SELECT_5KM): {
+		          i.putExtra("distance",5);
+		          requestCode = REQUEST_CODE_RUNNING_RECORD_5KM;
+		          break;
+		      }
+		      case (SELECT_10KM): {
+		          i.putExtra("distance",10);
+		          requestCode = REQUEST_CODE_RUNNING_RECORD_10KM;
+		          break;
+		      }
+		      case (SELECT_20KM): {
+		          i.putExtra("distance",20);
+		          requestCode = REQUEST_CODE_RUNNING_RECORD_20KM;
+		          break;
+		      }
+		      default: return false;
+		    } 
+	        startActivityForResult(i, requestCode);
+		}
+
   	  return true;
 	}
 	  
@@ -222,6 +239,9 @@ public class Runners extends ListActivity {
 	      }
 	  }
 
+	public void refreshRunningRecord() {
+		startService(new Intent(this, RunningRecordService.class));
+	}
 //	private void updateFromPreferences() {
 //		SharedPreferences prefs = getSharedPreferences(Preferences.USER_PREFERENCE, Activity.MODE_PRIVATE);
 //		int monthsToGetDataIndex = prefs.getInt(Preferences.PREF_MONTHS_TO_GET_DATA, Preferences.PREF_MONTHS_TO_GET_DATA_DEFAULT);

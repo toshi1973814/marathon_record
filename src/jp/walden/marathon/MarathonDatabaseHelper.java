@@ -36,6 +36,7 @@ public class MarathonDatabaseHelper extends SQLiteOpenHelper {
 	public static final String RUNNING_RECORD_KEY_TIME = "running_record_time";
 	public static final String RUNNING_RECORD_KEY_LINE = "running_record_line";
 	public static final String RUNNING_RECORD_KEY_CREATED_AT = "running_record_created_at";
+	public static final String RUNNING_RECORD_FK_NAME = "fk_" + KEY_NUMBER;
 
 	// Column indexes
 	public static final int RUNNING_RECORD_ID_COLUMN = 0;
@@ -58,7 +59,8 @@ public class MarathonDatabaseHelper extends SQLiteOpenHelper {
 	private static final String CREATE_RUNNING_RECORD =
 			"CREATE TABLE " + RUNNING_RECORD_TABLE + " ("
 			+ RUNNING_RECORD_KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-			+ RUNNING_RECORD_KEY_NUMBER + " INTEGER, "
+			+ RUNNING_RECORD_KEY_NUMBER + " INTEGER　CONSTRAINT "
+			+ RUNNING_RECORD_FK_NAME + " REFERENCES " + RUNNER_TABLE + "(" + KEY_NUMBER + ") ON DELETE CASCADE, "
 			+ RUNNING_RECORD_KEY_DATE + " DATE NOT NULL, "
 			+ RUNNING_RECORD_KEY_DISTANCE + " TEXT NOT NULL, "
 			+ RUNNING_RECORD_KEY_RANKING + " INTEGER, "
@@ -69,7 +71,7 @@ public class MarathonDatabaseHelper extends SQLiteOpenHelper {
 			+ "UNIQUE("
 			+ RUNNING_RECORD_KEY_NUMBER + ", "
 			+ RUNNING_RECORD_KEY_DATE + ", "
-			+ RUNNING_RECORD_KEY_DISTANCE + ") ON CONFLICT ROLLBACK);";
+			+ RUNNING_RECORD_KEY_LINE + ") ON CONFLICT ROLLBACK);";
 			
 	public MarathonDatabaseHelper(Context context, String name,
 			CursorFactory factory, int version) {

@@ -5,17 +5,22 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.sql.Date;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import jp.walden.util.ConvertString;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import android.content.Context;
 import android.util.Log;
-import jp.walden.util.ConvertString;
+import android.widget.Toast;
 
 //import android.content.ContentResolver;
 //import android.widget.ArrayAdapter;
@@ -53,7 +58,8 @@ public class HttpRunningRecord {
 	}
 	
 	public void extract
-	(String runnerNumber, RunningRecords rr) {
+	(String runnerNumber, RunningRecordService rrs) {
+//	(String runnerNumber, RunningRecords rr) {
 //	(String runnerNumber, ArrayList<RunningRecord> runningRecords,
 //			ArrayAdapter<RunningRecord> aa, RunningRecords rr) {
 //	public void extract(String runnerNumber) {
@@ -181,7 +187,7 @@ public class HttpRunningRecord {
 						runningRecordCounter++;
 //						runningRecords.add(record);
 //						aa.notifyDataSetChanged();
-						rr.addRunningRecord(record);
+						rrs.addRunningRecord(record);
 					}
 					sb.delete(0, sb.length());
 				}
@@ -194,11 +200,8 @@ public class HttpRunningRecord {
 				}
 			}
 	        in.close();
-	        // 該当月に記録が存在しない場合は、空のレコードを挿入
-	        if(0 == runningRecordCounter) {
-				RunningRecord record = new RunningRecord(Integer.valueOf(runnerNumber), runningDate, "", 0, 0, "");
-				rr.addRunningRecord(record);
-	        }
+	        // トーストを表示
+	        showToast(rrs, runningDate, runningRecordCounter, runnerNumber);
 	        
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -214,6 +217,27 @@ public class HttpRunningRecord {
 	        }
 		}
 //		return null;
+	}
+	private void showToast(RunningRecordService rrs, Date runningDate, int runningRecordCounter, String runnerNumber) {
+        Context context = rrs.getApplicationContext();
+        
+        // 該当月に記録が存在しない場合は、空のレコードを挿入
+        String msg = "";
+        String runnerName = ((RunningRecords)context).getRunnerName();
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(runningDate);
+		String dateForToast = String.valueOf(Calendar.YEAR) + '/' + String.valueOf(Calendar.MONTH + 1) + '/' + Calendar.DAY_OF_MONTH;
+		int duration = Toast.LENGTH_SHORT;
+
+        if(0 == runningRecordCounter) {
+			RunningRecord record = new RunningRecord(Integer.valueOf(runnerNumber), runningDate, "", 0, 0, "");
+			rrs.addRunningRecord(record);
+	        msg = context.getString(R.string.running_record_toast_message_not_found, runnerName, dateForToast);
+        } else {
+	        msg = context.getString(R.string.running_record_toast_message_found, runnerName, dateForToast, runningRecordCounter);
+        }
+		Toast toast = Toast.makeText(context, msg, duration);
+		toast.show();
 	}
 }
 

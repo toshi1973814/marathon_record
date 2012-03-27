@@ -5,6 +5,7 @@
     <string name="app_name">よこはま月例マラソン記録取得アプリ</string>
     <string name="menu_main_add_runner">ランナー追加</string>
     <string name="menu_main_preferences">設定</string>
+    <string name="menu_main_context_update_record">記録を本家サイトから取得</string>
     <string name="menu_main_context_select_1km">1kmの記録</string>
     <string name="menu_main_context_select_3km">3kmの記録</string>
     <string name="menu_main_context_select_5km">5kmの記録</string>
@@ -37,5 +38,7 @@
     <string name="running_record_table_header_divisor">/</string>
     <string name="running_record_table_header_total">トータル</string>
     <string name="running_record_table_header_time">時間</string>
+    <string name="running_record_toast_message_found">%1$sさんの%2$sの記録取得完了(%3$sレコード)</string>
+    <string name="running_record_toast_message_not_found">%1$sさんの%2$sの記録は見つかりませんでした</string>
     
 </resources>

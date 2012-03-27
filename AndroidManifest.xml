@@ -24,6 +24,7 @@
         <activity android:name=".RunningRecords" android:label="@string/running_record_page_title"/>
         <provider android:name=".RunnerProvider" android:authorities="jp.walden.provider.runner"></provider>
         <provider android:name=".RunningRecordProvider" android:authorities="jp.walden.provider.running_record" />
-    </application>
+        <service android:name=".RunningRecordService" android:enabled="true" />
+        </application>
 
 </manifest>
