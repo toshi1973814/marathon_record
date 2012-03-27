@@ -96,7 +96,8 @@ public class RunningRecord {
 		if(total != null) {
 			rankingAndTotal = rankingAndTotal + "/" + String.valueOf(total);
 		}
-		return "距離 : " + distance + "\n順位 : " + rankingAndTotal + "\nタイム : "
-				+ time;
+		return "ナンバー : " + runnerNumber +  "\n日付 : " + date +  "\n距離 : "
+			+ distance + "\n順位 : " + rankingAndTotal + "\nタイム : "
+			+ time +  "\n行 : " + line +  "\n作成日 : " + created_at;
 	}
 }

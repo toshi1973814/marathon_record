@@ -15,6 +15,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.util.Log;
+import jp.walden.util.ConvertString;
 
 //import android.content.ContentResolver;
 //import android.widget.ArrayAdapter;
@@ -71,10 +72,11 @@ public class HttpRunningRecord {
         
         try {
             int counter = 1;
+            int runningRecordCounter = 0;
 //            buffering = false;
             Pattern pDate = Pattern.compile("(\\d{4})\\.(\\d{1,2})\\.(\\d{1,2})");
             Pattern pDistance = Pattern.compile("(\\d+)\\s*(ｋｍ|ｋm)");
-            Pattern pDistanceOption = Pattern.compile("(\\d+)\\s*(ｋｍ|ｋm)\\s*（(.+)）");
+            Pattern pDistanceOption = Pattern.compile("(\\d+)\\s*(ｋｍ|ｋm)\\s*[（\\)](.+)[）\\)]");
             Pattern pRunnersTotal = Pattern.compile("<td.+>\\s*(\\d+)\\s*</td>");
 //            Pattern pDistanceMarker = Pattern.compile("\\*{5}");
 			Pattern pTrStart = Pattern.compile("<(tr|TR).+>");
@@ -118,28 +120,30 @@ public class HttpRunningRecord {
 					if(mDistance.find()) {
 						Matcher mDistanceOption = pDistanceOption.matcher(trContent);
 						distance = mDistance.group(1);
-						if(distance.equals("１")) {
-							distance = "1";
-						} else if(distance.equals("３")) {
-							distance = "3";
-						} else if(distance.equals("５")) {
-							distance = "5";
-						} else if(distance.equals("１０")) {
-							distance = "10";
-						} else if(distance.equals("２０")) {
-							distance = "20";
-						}
+						distance = ConvertString.zenkakuToHankaku(distance);
+//						if(distance.equals("１")) {
+//							distance = "1";
+//						} else if(distance.equals("３")) {
+//							distance = "3";
+//						} else if(distance.equals("５")) {
+//							distance = "5";
+//						} else if(distance.equals("１０")) {
+//							distance = "10";
+//						} else if(distance.equals("２０")) {
+//							distance = "20";
+//						}
 						distance = distance + "km";
 						
 						if(mDistanceOption.find()) {
 							String Option = mDistanceOption.group(3);
-							if(Option.equals("Ａ")) {
-								Option = "A";
-							} else if(Option.equals("Ｂ")) {
-								Option = "B";
-							} else if(Option.equals("Ｃ")) {
-								Option = "C";
-							}
+							Option = ConvertString.zenkakuToHankaku(Option);
+//							if(Option.equals("Ａ")) {
+//								Option = "A";
+//							} else if(Option.equals("Ｂ")) {
+//								Option = "B";
+//							} else if(Option.equals("Ｃ")) {
+//								Option = "C";
+//							}
 							distance = distance + " (" + Option + ")";
 						}
 
@@ -174,6 +178,7 @@ public class HttpRunningRecord {
 //						Date date = new Date(2012-1900,3,21);
 						RunningRecord record = new RunningRecord(Integer.valueOf(runnerNumber), runningDate, distance, ranking, total, time);
 						record.setLine(counter);
+						runningRecordCounter++;
 //						runningRecords.add(record);
 //						aa.notifyDataSetChanged();
 						rr.addRunningRecord(record);
@@ -189,6 +194,12 @@ public class HttpRunningRecord {
 				}
 			}
 	        in.close();
+	        // 該当月に記録が存在しない場合は、空のレコードを挿入
+	        if(0 == runningRecordCounter) {
+				RunningRecord record = new RunningRecord(Integer.valueOf(runnerNumber), runningDate, "", 0, 0, "");
+				rr.addRunningRecord(record);
+	        }
+	        
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (Exception e) {

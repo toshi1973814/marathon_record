@@ -5,14 +5,13 @@ import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 import android.app.Activity;
 import android.content.ContentProviderOperation;
 import android.content.ContentResolver;
 import android.content.OperationApplicationException;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
@@ -95,7 +94,10 @@ public class RunningRecords extends Activity {
   			} else {
   				// レコードがない場合は、デフォルトの最大過去月 + 1をlastRunningRecordDateStringとみなす
   				// TODO デフォルトの最大過去月を設定画面で設定できるようにする
-  				int maxPastMonth = 6;
+  				Integer maxPastMonth = getMonthsToGetData();
+//  				SharedPreferences prefs = getSharedPreferences(Preferences.USER_PREFERENCE, Activity.MODE_PRIVATE);
+//  				int monthsToGetDataIndex = prefs.getInt(PREF_MONTHS_TO_GET_DATA, PREF_MONTHS_TO_GET_DATA_DEFAULT);
+//  				int maxPastMonth = 6;
   				lastRunningRecordDate = new Date(currentYear, currentMonth - maxPastMonth , 1, 0, 0, 0);
   			}
 			
@@ -180,6 +182,22 @@ public class RunningRecords extends Activity {
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private Integer getMonthsToGetData() {
+		SharedPreferences prefs = getSharedPreferences(Preferences.USER_PREFERENCE, Activity.MODE_PRIVATE);
+		int monthsToGetDataIndex = prefs.getInt(Preferences.PREF_MONTHS_TO_GET_DATA, Preferences.PREF_MONTHS_TO_GET_DATA_DEFAULT);
+	    Resources r = getResources();
+	    // Get the option values from the arrays.
+	    String[] monthsToGetDataArray = r.getStringArray(R.array.preference_months_to_get);
+	    String monthsToGetDataString = monthsToGetDataArray[monthsToGetDataIndex];
+		Integer monthsToGetData;
+	    if(!monthsToGetDataString.equals(getString(R.string.array_item_all))) {
+	    	monthsToGetData = Integer.valueOf(monthsToGetDataString);
+	    } else {
+	    	monthsToGetData = 0;
+	    }
+		return monthsToGetData;
 	}
 
 	private void getExtraFromIntent() {

@@ -93,7 +93,7 @@ public class Runners extends ListActivity {
 //	    aa = new ArrayAdapter<Runner>(getApplicationContext(), android.R.layout.simple_list_item_1, runners);
 //        listView.setAdapter(aa);
         registerForContextMenu(this.getListView());
-        updateFromPreferences();
+//        updateFromPreferences();
 //        loadRunnersFromProvider();
     }
 
@@ -209,7 +209,7 @@ public class Runners extends ListActivity {
 
 	    if (requestCode == REQUEST_CODE_PREFERENCES)
 	      if (resultCode == Activity.RESULT_OK) {
-	    	  updateFromPreferences();
+//	    	  updateFromPreferences();
 	    	  
 //	    	  Bundle extras = data.getExtras();
 //	    	  Integer runnerNumber = Integer.parseInt(extras.getString("runnerNumberString"));
@@ -222,18 +222,18 @@ public class Runners extends ListActivity {
 	      }
 	  }
 
-	private void updateFromPreferences() {
-		SharedPreferences prefs = getSharedPreferences(Preferences.USER_PREFERENCE, Activity.MODE_PRIVATE);
-		int monthsToGetDataIndex = prefs.getInt(Preferences.PREF_MONTHS_TO_GET_DATA, Preferences.PREF_MONTHS_TO_GET_DATA_DEFAULT);
-	    Resources r = getResources();
-	    // Get the option values from the arrays.
-	    String[] monthsToGetDataArray = r.getStringArray(R.array.preference_months_to_get);
-	    String monthsToGetDataString = monthsToGetDataArray[monthsToGetDataIndex];
-	    if(!monthsToGetDataString.equals(getString(R.string.array_item_all))) {
-	    	monthsToGetData = Integer.valueOf(monthsToGetDataString);
-	    } else {
-	    	monthsToGetData = 0;
-	    }
-	}
+//	private void updateFromPreferences() {
+//		SharedPreferences prefs = getSharedPreferences(Preferences.USER_PREFERENCE, Activity.MODE_PRIVATE);
+//		int monthsToGetDataIndex = prefs.getInt(Preferences.PREF_MONTHS_TO_GET_DATA, Preferences.PREF_MONTHS_TO_GET_DATA_DEFAULT);
+//	    Resources r = getResources();
+//	    // Get the option values from the arrays.
+//	    String[] monthsToGetDataArray = r.getStringArray(R.array.preference_months_to_get);
+//	    String monthsToGetDataString = monthsToGetDataArray[monthsToGetDataIndex];
+//	    if(!monthsToGetDataString.equals(getString(R.string.array_item_all))) {
+//	    	monthsToGetData = Integer.valueOf(monthsToGetDataString);
+//	    } else {
+//	    	monthsToGetData = 0;
+//	    }
+//	}
 	
 }

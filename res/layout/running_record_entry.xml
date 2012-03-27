@@ -9,32 +9,32 @@
           android:id="@+id/date"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          style="@style/text_in_table"
+          style="@style/text_in_table_running_record"
       />
       <TextView
           android:id="@+id/ranking"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          style="@style/text_in_table"
+          style="@style/text_in_table_running_record"
       />
       <TextView
           android:id="@+id/divisor"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="/"
-          style="@style/text_in_table"
+          style="@style/text_in_table_running_record"
       />
       <TextView
           android:id="@+id/total"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          style="@style/text_in_table"
+          style="@style/text_in_table_running_record"
       />
       <TextView
           android:id="@+id/time"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          style="@style/text_in_table"
+          style="@style/text_in_table_running_record"
       />
       </TableRow>
 </TableLayout>

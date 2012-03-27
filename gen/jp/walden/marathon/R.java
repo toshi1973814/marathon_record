@@ -77,12 +77,19 @@ public final class R {
         public static final int runner_feed=0x7f050011;
         public static final int running_record_page_header=0x7f050014;
         public static final int running_record_page_title=0x7f050013;
+        public static final int running_record_table_header_date=0x7f05001f;
+        public static final int running_record_table_header_divisor=0x7f050021;
+        public static final int running_record_table_header_ranking=0x7f050020;
+        public static final int running_record_table_header_time=0x7f050023;
+        public static final int running_record_table_header_total=0x7f050022;
         public static final int running_record_url=0x7f050015;
         public static final int running_record_url_pattern=0x7f050016;
     }
     public static final class style {
-        public static final int supplement_text=0x7f060002;
+        public static final int supplement_text=0x7f060004;
         public static final int text_in_table=0x7f060001;
         public static final int text_in_table_header=0x7f060000;
+        public static final int text_in_table_main=0x7f060002;
+        public static final int text_in_table_running_record=0x7f060003;
     }
 }

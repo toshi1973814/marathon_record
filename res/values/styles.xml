@@ -4,12 +4,19 @@
         <item name="android:textSize">16sp</item>
     </style>
     <style name="text_in_table">
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">24sp</item>
         <item name="android:layout_marginBottom">8sp</item>
         <item name="android:layout_marginTop">8sp</item>
         <item name="android:layout_marginRight">8sp</item>
         <item name="android:layout_marginLeft">8sp</item>
     </style>
+    <style name="text_in_table_main" parent="@style/text_in_table">
+        <item name="android:textSize">24sp</item>
+    </style>
+    <style name="text_in_table_running_record" parent="@style/text_in_table">
+        <item name="android:textSize">18sp</item>
+    </style>
+    
     <style name="supplement_text">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">#FF0000</item>

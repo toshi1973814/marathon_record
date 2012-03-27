@@ -10,7 +10,7 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:longClickable = "true"
-          style="@style/text_in_table"
+          style="@style/text_in_table_main"
       />
       <TextView
           android:id="@+id/number_entry"
@@ -18,7 +18,7 @@
           android:layout_height="wrap_content"
           android:numeric="integer"
           android:longClickable = "true"
-          style="@style/text_in_table"
+          style="@style/text_in_table_main"
       />
     </TableRow>
 </TableLayout>

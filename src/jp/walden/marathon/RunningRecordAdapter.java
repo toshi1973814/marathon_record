@@ -48,7 +48,7 @@ public class RunningRecordAdapter extends ArrayAdapter<RunningRecord> {
 //        String month = String.format("%02d", calendar.get(Calendar.MONTH));
 //        String day = String.format("%02d", calendar.get(Calendar.DAY_OF_MONTH));
         String date = String.format
-        		("%04d/%02d/%02d", calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) , calendar.get(Calendar.DAY_OF_MONTH));
+        		("%04d/%02d/%02d", calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1 , calendar.get(Calendar.DAY_OF_MONTH));
         holder.date.setText(date);
         Integer total = record.getTotal();
         String totalString = null;
