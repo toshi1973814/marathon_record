@@ -1,23 +1,19 @@
 package jp.walden.marathon;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.ArrayList;
 
+import jp.walden.util.CalendarUtil;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.ContentResolver;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnTouchListener;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.SimpleCursorAdapter;
@@ -50,6 +46,8 @@ public class Runners extends ListActivity {
 	static final private int REMOVE_RUNNER = Menu.FIRST + 6;
 
 	private static final String QUERY_RESULT_FORMAT = "yyyy-MM-dd";
+	
+	ArrayList<ParcelableRunner> runnerList = new ArrayList<ParcelableRunner>();
 
 //	ArrayAdapter<Runner> aa;
 //	ArrayList<Runner> runners = new ArrayList<Runner>();
@@ -59,6 +57,7 @@ public class Runners extends ListActivity {
 	
 	Cursor cursor;
 	ContentResolver cr;
+	Intent intent;
 
 	/** Called when the activity is first created. */
     @Override
@@ -119,12 +118,16 @@ public class Runners extends ListActivity {
 
 	public void updateAllRunnerRecords(View v) {
 		// 全員分の記録を更新するためのIntentをRunnerRecordServiceに送る
+		sendIntent();
     }
 
 	public void showAddRunnerForm(View v) {
 		showAddRunnerForm();
     }
 
+	private void sendIntent() {
+		
+	}
 	public void showAddRunnerForm() {
         Intent i = new Intent(this, AddRunner.class);
         startActivityForResult(i, REQUEST_CODE_ADD_RUNNER);
@@ -166,69 +169,87 @@ public class Runners extends ListActivity {
 	    	  return true;
   		}
 
-  		Intent i;
+//  		Intent i;
         int requestCode = 0;
   		
   		// データ更新
   		if(itemId == UPDATE_RECORD) {
   			// 現在日付を取得
-  	  		Calendar currentDate = Calendar.getInstance();
-//  	  		String dateFormat = "yyyy-MM-dd";
-  	  		SimpleDateFormat formatter= 
-  	  				new SimpleDateFormat(QUERY_RESULT_FORMAT);
-  	  		String dateNow = formatter.format(currentDate.getTime());
-  	  		
+  			String dateNow = CalendarUtil.getCurrentCalendarString(QUERY_RESULT_FORMAT);
+//  	  		Calendar currentDate = Calendar.getInstance();
+////  	  		String dateFormat = "yyyy-MM-dd";
+//  	  		SimpleDateFormat formatter= 
+//  	  				new SimpleDateFormat(QUERY_RESULT_FORMAT);
+//  	  		String dateNow = formatter.format(currentDate.getTime());
+  	  		// ランナー名を取得
   	  		String where = MarathonDatabaseHelper.KEY_ID + "=" + String.valueOf(info.id);
   	  		cursor = cr.query(RunnerProvider.RUNNER_URI, null, where, null, null);
   	  		cursor.moveToFirst();
   	  		String runnerName = cursor.getString(MarathonDatabaseHelper.NAME_COLUMN);
   	  		
-	  		i = new Intent(this, RunningRecordService.class);
-	        i.putExtra("runnerId",info.id);
-	        i.putExtra("runnerName",runnerName);
-			i.putExtra("date",dateNow);
-			i.putExtra("dateFormat",QUERY_RESULT_FORMAT);
-//			requestCode = REQUEST_CODE_UPDATE_RECORD;
-			startService(i);
+  	  		// Ojbect形式でIntentのやり取りをするためにArrayList<ParcelableRunner>を作成
+	  		ParcelableRunner pRunner = new ParcelableRunner(info.id, runnerName);
+	  		runnerList.add(pRunner);
+  	  		startRunnerRecordService(runnerList, dateNow, QUERY_RESULT_FORMAT);
+
+//  	  		i = new Intent(this, RunningRecordService.class);
+//	  		i.putParcelableArrayListExtra("runnerList", runnerList);
+////	        i.putExtra("runnerId",info.id);
+////	        i.putExtra("runnerName",runnerName);
+//			i.putExtra("date",dateNow);
+//			i.putExtra("dateFormat",QUERY_RESULT_FORMAT);
+////			requestCode = REQUEST_CODE_UPDATE_RECORD;
+//			startService(i);
 	    	return true;
 		} else {
-	  		i = new Intent(this, RunningRecords.class);
-	        i.putExtra("runnerId",info.id);
+	  		intent = new Intent(this, RunningRecords.class);
+	        intent.putExtra("runnerId",info.id);
 		    switch (itemId) {
 		      case (SELECT_1KM): {
-		          i.putExtra("distance",1);
+		          intent.putExtra("distance",1);
 		          requestCode = REQUEST_CODE_RUNNING_RECORD_1KM;
 		          break;
 		      }
 		      case (SELECT_3KM): {
-		          i.putExtra("distance",3);
+		          intent.putExtra("distance",3);
 		          requestCode = REQUEST_CODE_RUNNING_RECORD_3KM;
 		          break;
 		      }
 		      case (SELECT_5KM): {
-		          i.putExtra("distance",5);
+		          intent.putExtra("distance",5);
 		          requestCode = REQUEST_CODE_RUNNING_RECORD_5KM;
 		          break;
 		      }
 		      case (SELECT_10KM): {
-		          i.putExtra("distance",10);
+		          intent.putExtra("distance",10);
 		          requestCode = REQUEST_CODE_RUNNING_RECORD_10KM;
 		          break;
 		      }
 		      case (SELECT_20KM): {
-		          i.putExtra("distance",20);
+		          intent.putExtra("distance",20);
 		          requestCode = REQUEST_CODE_RUNNING_RECORD_20KM;
 		          break;
 		      }
 		      default: return false;
 		    } 
-	        startActivityForResult(i, requestCode);
+	        startActivityForResult(intent, requestCode);
 		}
 
   	  return true;
 	}
 	  
-	  private void removeRunner(String id) {
+	  private void startRunnerRecordService(ArrayList<ParcelableRunner> runnerList, String dateNow, String dateFormat) {
+  		intent = new Intent(this, RunningRecordService.class);
+  		intent.putParcelableArrayListExtra("runnerList", runnerList);
+//	        i.putExtra("runnerId",info.id);
+//	        i.putExtra("runnerName",runnerName);
+		intent.putExtra("date",dateNow);
+		intent.putExtra("dateFormat",dateFormat);
+//			requestCode = REQUEST_CODE_UPDATE_RECORD;
+		startService(intent);
+	}
+
+	private void removeRunner(String id) {
 //		  ContentResolver cr = getContentResolver();
 		  String where = RunnerProvider.KEY_ID + " = " + id;
 		  cr.delete(RunnerProvider.RUNNER_URI, where, null);
