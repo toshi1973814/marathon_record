@@ -45,7 +45,11 @@ public class Runners extends ListActivity {
 	static final private int SELECT_20KM = Menu.FIRST + 5;
 	static final private int REMOVE_RUNNER = Menu.FIRST + 6;
 
-	private static final String QUERY_RESULT_FORMAT = "yyyy-MM-dd";
+	public static final String QUERY_RESULT_FORMAT = "yyyy-MM-dd";
+
+	public static final String INTENT_KEYS_RUNNER_LIST = "runnerList";
+	public static final String INTENT_KEYS_DATE = "date";
+	public static final String INTENT_KEYS_DATE_FORMAT = "dateFormat";
 	
 	ArrayList<ParcelableRunner> runnerList = new ArrayList<ParcelableRunner>();
 
@@ -174,8 +178,6 @@ public class Runners extends ListActivity {
   		
   		// データ更新
   		if(itemId == UPDATE_RECORD) {
-  			// 現在日付を取得
-  			String dateNow = CalendarUtil.getCurrentCalendarString(QUERY_RESULT_FORMAT);
 //  	  		Calendar currentDate = Calendar.getInstance();
 ////  	  		String dateFormat = "yyyy-MM-dd";
 //  	  		SimpleDateFormat formatter= 
@@ -190,6 +192,10 @@ public class Runners extends ListActivity {
   	  		// Ojbect形式でIntentのやり取りをするためにArrayList<ParcelableRunner>を作成
 	  		ParcelableRunner pRunner = new ParcelableRunner(info.id, runnerName);
 	  		runnerList.add(pRunner);
+
+	  		// 現在日付を取得
+  			String dateNow = CalendarUtil.getCurrentCalendarString(QUERY_RESULT_FORMAT);
+  			
   	  		startRunnerRecordService(runnerList, dateNow, QUERY_RESULT_FORMAT);
 
 //  	  		i = new Intent(this, RunningRecordService.class);
@@ -240,11 +246,11 @@ public class Runners extends ListActivity {
 	  
 	  private void startRunnerRecordService(ArrayList<ParcelableRunner> runnerList, String dateNow, String dateFormat) {
   		intent = new Intent(this, RunningRecordService.class);
-  		intent.putParcelableArrayListExtra("runnerList", runnerList);
+  		intent.putParcelableArrayListExtra(Runners.INTENT_KEYS_RUNNER_LIST, runnerList);
 //	        i.putExtra("runnerId",info.id);
 //	        i.putExtra("runnerName",runnerName);
-		intent.putExtra("date",dateNow);
-		intent.putExtra("dateFormat",dateFormat);
+		intent.putExtra(Runners.INTENT_KEYS_DATE, dateNow);
+		intent.putExtra(Runners.INTENT_KEYS_DATE_FORMAT, dateFormat);
 //			requestCode = REQUEST_CODE_UPDATE_RECORD;
 		startService(intent);
 	}

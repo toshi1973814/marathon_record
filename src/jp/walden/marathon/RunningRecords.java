@@ -225,9 +225,9 @@ public class RunningRecords extends Activity {
 		runningRecordPageHeader.setText(title);
 	}
 	
-	public String getRunnerName() {
-		return runnerName;
-	}
+//	public String getRunnerName() {
+//		return runnerName;
+//	}
 //
 //	private Cursor getLastRunningRecordCursor() {
 //		StringBuffer sb = new StringBuffer();
