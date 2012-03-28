@@ -32,12 +32,12 @@ public class Runners extends ListActivity {
 //	private static final int DIALOG_ADD_RUNNER = 1;
 	private static final int REQUEST_CODE_ADD_RUNNER = 1;
 	private static final int REQUEST_CODE_PREFERENCES = 2;
-	private static final int REQUEST_CODE_UPDATE_RECORD = 3;
-	private static final int REQUEST_CODE_RUNNING_RECORD_1KM = 4;
-	private static final int REQUEST_CODE_RUNNING_RECORD_3KM = 5;
-	private static final int REQUEST_CODE_RUNNING_RECORD_5KM = 6;
-	private static final int REQUEST_CODE_RUNNING_RECORD_10KM = 7;
-	private static final int REQUEST_CODE_RUNNING_RECORD_20KM = 8;
+//	private static final int REQUEST_CODE_UPDATE_RECORD = 3;
+	private static final int REQUEST_CODE_RUNNING_RECORD_1KM = 3;
+	private static final int REQUEST_CODE_RUNNING_RECORD_3KM = 4;
+	private static final int REQUEST_CODE_RUNNING_RECORD_5KM = 5;
+	private static final int REQUEST_CODE_RUNNING_RECORD_10KM = 6;
+	private static final int REQUEST_CODE_RUNNING_RECORD_20KM = 7;
 	protected Button add_runner;
 	  
 	// Define the new menu item identifiers 
@@ -56,14 +56,17 @@ public class Runners extends ListActivity {
 	SimpleCursorAdapter mAdapter;
 //	Cursor cursor;
 	Integer monthsToGetData;
+	
+	Cursor cursor;
+	ContentResolver cr;
 
 	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        ContentResolver cr = getContentResolver();
-        Cursor cursor = cr.query(RunnerProvider.RUNNER_URI, null, null, null, null);
+        cr = getContentResolver();
+        cursor = cr.query(RunnerProvider.RUNNER_URI, null, null, null, null);
         startManagingCursor(cursor);
         String[] columns = new String[] {
         		RunnerProvider.KEY_NAME,
@@ -100,7 +103,7 @@ public class Runners extends ListActivity {
 //        updateFromPreferences();
 //        loadRunnersFromProvider();
     }
-
+    
     @Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
@@ -113,6 +116,10 @@ public class Runners extends ListActivity {
 		menu.add(MENU_GROUP_CONTEXT, SELECT_20KM, Menu.NONE, R.string.menu_main_context_select_20km);
 		menu.add(MENU_GROUP_CONTEXT, REMOVE_RUNNER, Menu.NONE, R.string.menu_main_context_delete_runner);
 	}
+
+	public void updateAllRunnerRecords(View v) {
+		// 全員分の記録を更新するためのIntentをRunnerRecordServiceに送る
+    }
 
 	public void showAddRunnerForm(View v) {
 		showAddRunnerForm();
@@ -170,11 +177,18 @@ public class Runners extends ListActivity {
   	  		SimpleDateFormat formatter= 
   	  				new SimpleDateFormat(QUERY_RESULT_FORMAT);
   	  		String dateNow = formatter.format(currentDate.getTime());
+  	  		
+  	  		String where = MarathonDatabaseHelper.KEY_ID + "=" + String.valueOf(info.id);
+  	  		cursor = cr.query(RunnerProvider.RUNNER_URI, null, where, null, null);
+  	  		cursor.moveToFirst();
+  	  		String runnerName = cursor.getString(MarathonDatabaseHelper.NAME_COLUMN);
+  	  		
 	  		i = new Intent(this, RunningRecordService.class);
 	        i.putExtra("runnerId",info.id);
+	        i.putExtra("runnerName",runnerName);
 			i.putExtra("date",dateNow);
 			i.putExtra("dateFormat",QUERY_RESULT_FORMAT);
-			requestCode = REQUEST_CODE_UPDATE_RECORD;
+//			requestCode = REQUEST_CODE_UPDATE_RECORD;
 			startService(i);
 	    	return true;
 		} else {
@@ -215,7 +229,7 @@ public class Runners extends ListActivity {
 	}
 	  
 	  private void removeRunner(String id) {
-		  ContentResolver cr = getContentResolver();
+//		  ContentResolver cr = getContentResolver();
 		  String where = RunnerProvider.KEY_ID + " = " + id;
 		  cr.delete(RunnerProvider.RUNNER_URI, where, null);
 	}

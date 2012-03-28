@@ -2,18 +2,72 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:layout_weight="0"
+>
     <TextView
         android:id="@+id/running_record_page_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=""
         style="@style/text_in_table"
+        android:layout_weight="0"
+        android:gravity="top"
     />
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="0,1,3"
+        android:layout_weight="0"
+        android:gravity="top"
+    >
+        <TableRow>
+          <TextView
+              android:id="@+id/running_record_header_date"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              style="@style/text_in_table_header"
+              android:gravity="left"
+              android:text="@string/running_record_header_date"
+          />
+          <TextView
+              android:id="@+id/running_record_header_ranking"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              style="@style/text_in_table_header"
+              android:gravity="right"
+              android:text="@string/running_record_header_ranking"
+          />
+          <TextView
+              android:id="@+id/running_record_header_divisor"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              style="@style/text_in_table_header"
+              android:text="@string/running_record_header_divisor"
+          />
+          <TextView
+              android:id="@+id/running_record_header_total"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              style="@style/text_in_table_header"
+              android:gravity="right"
+              android:text="@string/running_record_header_total"
+          />
+          <TextView
+              android:id="@+id/running_record_header_time"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              style="@style/text_in_table_header"
+              android:gravity="right"
+              android:text="@string/running_record_header_time"
+          />
+          </TableRow>
+    </TableLayout>
     
     <ListView
         android:id="@+id/running_record"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:gravity="top"
     />
 </LinearLayout>

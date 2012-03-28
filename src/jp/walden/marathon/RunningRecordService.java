@@ -11,47 +11,87 @@ import android.app.Activity;
 import android.app.Service;
 import android.content.ContentProviderOperation;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.OperationApplicationException;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Log;
+import android.widget.Toast;
 
 public class RunningRecordService extends Service {
 
 	private ContentResolver cr;
 	private Resources res;
 
-	ArrayList<ContentProviderOperation> ops;
+	private ArrayList<ContentProviderOperation> ops;
 	private static final String TAG = "RunningRecordService";
 	private static final String QUERY_RESULT_FORMAT = "yyyy-MM-dd";
 
 	private int runnerNumber;
 	private SimpleDateFormat queryResultFormatter = new SimpleDateFormat(QUERY_RESULT_FORMAT);
-	private String date;
-	private String dateFormat;
-	private String runnerIdString;
+	private String date = "";
+	private String dateFormat = "";
+	private String runnerIdString = "";
+	private String runnerName = "";
+	
+	private Context context = null;
+	private String toastMessage = "";
+	public Handler toastHandler = null;
 
 	@Override
 	public void onCreate() {
-		// TODO Auto-generated method stub
 		super.onCreate();
+		context = getApplicationContext();
+		toastHandler = new Handler();
+
 	}
 
+	public void setToastMessage(String toastMessage) {
+		this.toastMessage = toastMessage;
+	}
+
+	public Runnable toastRunnable = new Runnable() {public void run() {
+		int duration = Toast.LENGTH_SHORT;
+		Toast toast = Toast.makeText(context, toastMessage, duration);
+		toast.show();
+	}};
+	
 	@Override
 	public void onStart(Intent intent, int startId) {
 		if(intent.getExtras().containsKey("runnerId")) {
 			getExtraFromIntent(intent);
-			refreshRunningRecord();
+			updateRunningRecords();
 		}
 	}
+//
+//	private void showToast(String msg) {
+//		int duration = Toast.LENGTH_SHORT;
+//		Toast toast = Toast.makeText(context, msg, duration);
+//		toast.show();
+//    }
 
-	private void refreshRunningRecord() {
+	private void updateRunningRecords() {
+		Thread updateThread = new Thread(null, backgroundUpdate, "update_runningRecord");  
+		updateThread.start();        
+	}
+
+	private Runnable backgroundUpdate = new Runnable() {
+		public void run() {
+			doUpdateRunningRecord();
+		}
+	};
+	
+	private void doUpdateRunningRecord() {
 //		(Date firstDateOfForLoopMonth, int runnerNumber, Date firstDateOfCurrentMonth) {
+		toastMessage = context.getString(R.string.running_record_toast_start_update);
+		toastHandler.post(toastRunnable);
+//		showToast(startMsg);
 		
 		String lastRunningRecordDateString = "";
 		cr = getContentResolver();
@@ -139,6 +179,11 @@ public class RunningRecordService extends Service {
 				}
 			}
 
+		toastMessage = context.getString(R.string.running_record_toast_end_update);
+		toastHandler.post(toastRunnable);
+//		String endMsg = context.getString(R.string.running_record_toast_end_update);
+//		showToast(endMsg);
+
 		} catch (ParseException e1) {
 			e1.printStackTrace();
 		} catch (URISyntaxException e) {
@@ -189,6 +234,7 @@ public class RunningRecordService extends Service {
 		date = intent.getExtras().getString("date");
 		dateFormat = intent.getExtras().getString("dateFormat");
 	    runnerIdString = String.valueOf(runnerId);
+	    runnerName = intent.getExtras().getString("runnerName");
 	}
 
 	public void addRunningRecord(RunningRecord runningRecord) {
@@ -219,6 +265,13 @@ public class RunningRecordService extends Service {
 	public IBinder onBind(Intent intent) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	/**
+	 * @return the runnerName
+	 */
+	public String getRunnerName() {
+		return runnerName;
 	}
 
 }

@@ -18,26 +18,32 @@ public final class R {
     }
     public static final class id {
         public static final int add_runner=0x7f070007;
-        public static final int button_cancel=0x7f07000d;
+        public static final int button_cancel=0x7f07000e;
         public static final int button_edit=0x7f070006;
-        public static final int date=0x7f070010;
-        public static final int divisor=0x7f070012;
-        public static final int form_label_months_to_get_data=0x7f07000b;
+        public static final int date=0x7f070016;
+        public static final int divisor=0x7f070018;
+        public static final int form_label_months_to_get_data=0x7f07000c;
         public static final int form_label_runner_name=0x7f070004;
         public static final int form_label_runner_number=0x7f070002;
-        public static final int main_runner_supplementation=0x7f07000a;
+        public static final int main_runner_supplementation=0x7f07000b;
         public static final int message=0x7f070000;
-        public static final int months_to_get_data=0x7f07000c;
-        public static final int name_entry=0x7f070008;
-        public static final int number_entry=0x7f070009;
-        public static final int ranking=0x7f070011;
+        public static final int months_to_get_data=0x7f07000d;
+        public static final int name_entry=0x7f070009;
+        public static final int number_entry=0x7f07000a;
+        public static final int ranking=0x7f070017;
         public static final int runner_name=0x7f070005;
         public static final int runner_number=0x7f070003;
-        public static final int running_record=0x7f07000f;
-        public static final int running_record_page_header=0x7f07000e;
+        public static final int running_record=0x7f070015;
+        public static final int running_record_header_date=0x7f070010;
+        public static final int running_record_header_divisor=0x7f070012;
+        public static final int running_record_header_ranking=0x7f070011;
+        public static final int running_record_header_time=0x7f070014;
+        public static final int running_record_header_total=0x7f070013;
+        public static final int running_record_page_header=0x7f07000f;
         public static final int supplementation=0x7f070001;
-        public static final int time=0x7f070014;
-        public static final int total=0x7f070013;
+        public static final int time=0x7f07001a;
+        public static final int total=0x7f070019;
+        public static final int update_running_record=0x7f070008;
     }
     public static final class layout {
         public static final int add_runner=0x7f030000;
@@ -73,9 +79,15 @@ public final class R {
         public static final int menu_main_context_update_record=0x7f050004;
         public static final int menu_main_preferences=0x7f050003;
         public static final int message_navigation_to_add_runner=0x7f050010;
+        public static final int message_navigation_to_update_runner_records=0x7f05002a;
         public static final int months_to_get_data=0x7f05001d;
         public static final int no_string=0x7f050011;
         public static final int runner_feed=0x7f050012;
+        public static final int running_record_header_date=0x7f05002b;
+        public static final int running_record_header_divisor=0x7f05002d;
+        public static final int running_record_header_ranking=0x7f05002c;
+        public static final int running_record_header_time=0x7f05002f;
+        public static final int running_record_header_total=0x7f05002e;
         public static final int running_record_page_header=0x7f050015;
         public static final int running_record_page_title=0x7f050014;
         public static final int running_record_table_header_date=0x7f050020;
@@ -83,8 +95,11 @@ public final class R {
         public static final int running_record_table_header_ranking=0x7f050021;
         public static final int running_record_table_header_time=0x7f050024;
         public static final int running_record_table_header_total=0x7f050023;
+        public static final int running_record_toast_end_update=0x7f050028;
         public static final int running_record_toast_message_found=0x7f050025;
         public static final int running_record_toast_message_not_found=0x7f050026;
+        public static final int running_record_toast_start_update=0x7f050027;
+        public static final int running_record_toast_stop_update=0x7f050029;
         public static final int running_record_url=0x7f050016;
         public static final int running_record_url_pattern=0x7f050017;
     }

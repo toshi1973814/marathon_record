@@ -2,7 +2,9 @@
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:stretchColumns="0"
+    android:stretchColumns="0,1,3"
+    android:layout_weight="0"
+    android:gravity="top"
 >
     <TableRow>
       <TextView
@@ -10,18 +12,20 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           style="@style/text_in_table_running_record"
+          android:gravity="left"
       />
       <TextView
           android:id="@+id/ranking"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           style="@style/text_in_table_running_record"
+          android:gravity="right"
       />
       <TextView
           android:id="@+id/divisor"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="/"
+          android:text="@string/running_record_header_divisor"
           style="@style/text_in_table_running_record"
       />
       <TextView
@@ -29,12 +33,14 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           style="@style/text_in_table_running_record"
+          android:gravity="right"
       />
       <TextView
           android:id="@+id/time"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           style="@style/text_in_table_running_record"
+          android:gravity="right"
       />
       </TableRow>
 </TableLayout>

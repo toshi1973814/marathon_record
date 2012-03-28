@@ -218,16 +218,17 @@ public class HttpRunningRecord {
 		}
 //		return null;
 	}
+
 	private void showToast(RunningRecordService rrs, Date runningDate, int runningRecordCounter, String runnerNumber) {
         Context context = rrs.getApplicationContext();
         
         // 該当月に記録が存在しない場合は、空のレコードを挿入
         String msg = "";
-        String runnerName = ((RunningRecords)context).getRunnerName();
+        String runnerName = rrs.getRunnerName();
 		Calendar calendar = new GregorianCalendar();
 		calendar.setTime(runningDate);
-		String dateForToast = String.valueOf(Calendar.YEAR) + '/' + String.valueOf(Calendar.MONTH + 1) + '/' + Calendar.DAY_OF_MONTH;
-		int duration = Toast.LENGTH_SHORT;
+		String dateForToast = String.valueOf(calendar.get(Calendar.YEAR)) + '/' + String.valueOf(calendar.get(Calendar.MONTH + 1)) + '/' + calendar.get(Calendar.DAY_OF_MONTH);
+//		int duration = Toast.LENGTH_SHORT;
 
         if(0 == runningRecordCounter) {
 			RunningRecord record = new RunningRecord(Integer.valueOf(runnerNumber), runningDate, "", 0, 0, "");
@@ -236,8 +237,10 @@ public class HttpRunningRecord {
         } else {
 	        msg = context.getString(R.string.running_record_toast_message_found, runnerName, dateForToast, runningRecordCounter);
         }
-		Toast toast = Toast.makeText(context, msg, duration);
-		toast.show();
+//		Toast toast = Toast.makeText(context, msg, duration);
+//		toast.show();
+        rrs.setToastMessage(msg);
+        rrs.toastHandler.post(rrs.toastRunnable);
 	}
 }
 

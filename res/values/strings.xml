@@ -15,19 +15,19 @@
     <string name="button_add_runner">追加</string>
     <string name="form_label_runner_number">ナンバー</string>
     <string name="form_label_runner_name">名前</string>
-    <string name="add_runner_supplementation">名前は記録の検索では使われないので、自由に設定してください。</string>
-    <string name="error_message_runner_number_wrong_format">ナンバーは数値を入力してください。</string>
+    <string name="add_runner_supplementation">名前は記録の検索では使われないので、\n自由に設定してください</string>
+    <string name="error_message_runner_number_wrong_format">ナンバーは数値を入力してください</string>
     <string name="message_navigation_to_add_runner">ランナーを追加</string>
     <string name="no_string"></string>
     <string name="runner_feed">http://earthquake.usgs.gov/eqcenter/catalogs/1day-M2.5.xml</string>
-    <string name="error_message_failed_to_add_runner">ランナーの追加に失敗しました。\nナンバーの重複等ご確認ください。</string>
+    <string name="error_message_failed_to_add_runner">ランナーの追加に失敗しました\nナンバーの重複等ご確認ください</string>
     <string name="running_record_page_title">記録</string>
     <string name="running_record_page_header">%1$sさんの記録</string>
     <string name="running_record_url">http://yg.qee.jp/2012/201201.htm</string>
     <string name="running_record_url_pattern">http://yg.qee.jp/%1$s/%2$s.htm</string>
     <string name="main_runner_name_header">ランナー名</string>
     <string name="main_runner_number_header">ナンバー</string>
-    <string name="main_runner_supplementation">ランナー名を長押しするとメニューが表示されます。</string>
+    <string name="main_runner_supplementation">ランナー名を長押しすると\nメニューが表示されます</string>
     <string name="failed_to_get_total_symbol">-</string>
     <string name="button_edit">保存</string>
     <string name="months_to_get_data">データ取得期間（過去xか月）</string>
@@ -38,7 +38,17 @@
     <string name="running_record_table_header_divisor">/</string>
     <string name="running_record_table_header_total">トータル</string>
     <string name="running_record_table_header_time">時間</string>
-    <string name="running_record_toast_message_found">%1$sさんの%2$sの記録取得完了(%3$sレコード)</string>
-    <string name="running_record_toast_message_not_found">%1$sさんの%2$sの記録は見つかりませんでした</string>
+    <string name="running_record_toast_message_found">%1$sさんの%2$sの\n記録取得完了(%3$sレコード)</string>
+    <string name="running_record_toast_message_not_found">%1$sさんの%2$sの\n記録は見つかりませんでした</string>
+    <string name="running_record_toast_start_update">記録取得を開始しました</string>
+    <string name="running_record_toast_end_update">記録取得を終了しました</string>
+    <string name="running_record_toast_stop_update">記録取得を中断しました</string>
+    <string name="message_navigation_to_update_runner_records">記録を一括取得</string>
+
+    <string name="running_record_header_date">日付</string>
+    <string name="running_record_header_ranking">着順</string>
+    <string name="running_record_header_divisor">/</string>
+    <string name="running_record_header_total">参加者数</string>
+    <string name="running_record_header_time">タイム</string>
     
 </resources>

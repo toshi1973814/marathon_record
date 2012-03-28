@@ -2,20 +2,40 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
-    <Button
-      android:id="@+id/add_runner"
-      android:layout_width="fill_parent" 
-      android:layout_height="wrap_content" 
-      android:text="@string/message_navigation_to_add_runner"
-      android:onClick="showAddRunnerForm"
-      android:layout_marginTop="10sp"
-    />
-    
+    android:orientation="vertical"
+    android:layout_weight="0"
+>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_weight="0"
+    >
+        <Button
+          android:id="@+id/add_runner"
+          android:layout_width="wrap_content" 
+          android:layout_height="wrap_content" 
+          android:text="@string/message_navigation_to_add_runner"
+          android:onClick="showAddRunnerForm"
+          android:layout_marginTop="10sp"
+          android:layout_weight="1"
+        />
+        <Button
+          android:id="@+id/update_running_record"
+          android:layout_width="wrap_content" 
+          android:layout_height="wrap_content" 
+          android:text="@string/message_navigation_to_update_runner_records"
+          android:onClick="updateAllRunnerRecords"
+          android:layout_marginTop="10sp"
+          android:layout_weight="1"
+        />
+        </LinearLayout>
     <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:stretchColumns="0"
+        android:layout_weight="0"
+        android:gravity="top"
     >
         <TableRow>
           <TextView
@@ -39,12 +59,16 @@
         android:id="@android:id/android:list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="top"
     />
   <TextView
       android:id="@+id/main_runner_supplementation"
-      android:layout_width="wrap_content"
+      android:layout_width="fill_parent"
       android:layout_height="wrap_content"
       android:text="@string/main_runner_supplementation"
       style="@style/supplement_text"
+      android:layout_weight="0"
+      android:gravity="bottom|center_horizontal"
   />
 </LinearLayout>
