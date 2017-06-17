@@ -16,13 +16,11 @@ public class ParcelableRunner implements Parcelable {
 		this.runnerName = runnerName;
 	}
 
-	@Override
 	public int describeContents() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 	      Log.v(TAG, "writeToParcel..."+ flags);
 	      dest.writeLong(runnerId);

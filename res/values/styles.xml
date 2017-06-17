@@ -18,7 +18,7 @@
         <item name="android:textSize">24sp</item>
     </style>
     <style name="text_in_table_running_record" parent="@style/text_in_table">
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">18sp</item>marathon.monthly.yokohama.
     </style>
     
     <style name="supplement_text">
